@@ -1,1 +1,2 @@
 # medone
+npm run dev
