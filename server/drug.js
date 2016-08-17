@@ -1,15 +1,25 @@
-const config  = require('./config');
-const sqlite  = require('sqlite3');
-const path    = require('path');
-const db      = new sqlite.Database(path.join(__dirname, `db`, config.db));
+const config = require('./config');
+const sqlite = require('sqlite3');
+const path = require('path');
+const db = new sqlite.Database(path.join(__dirname, `db`, config.db));
 
 
 class Drug {
 
     get(id = null) {
-        return new Promise( (resolve, reject) => {
-            if (id > 0) {
-                db.get('SELECT * FROM drugs WHERE id = ?', id, (err, row) => {
+        return new Promise((resolve, reject) => {
+            db.get('SELECT * FROM drugs WHERE docid = ?', id, (err, row) => {
+                if (err) reject(err);
+                resolve(row);
+            });
+        });
+    }
+
+    getAll(denominationOrIngredient = null) {
+        return new Promise((resolve, reject) => {
+            if (denominationOrIngredient) {
+                let match = `preparation_denomination:*${denominationOrIngredient}* OR active_ingredients:*${denominationOrIngredient}*`;
+                db.all(`SELECT * FROM drugs WHERE drugs MATCH ?`, match, (err, row) => {
                     if (err) reject(err);
                     resolve(row);
                 });

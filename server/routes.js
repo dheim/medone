@@ -19,7 +19,7 @@ let medoneRouter = () => {
             });
         })
         .get('/drugs', (req, res) => {
-            drug.get().then((rows) => {
+            drug.getAll(req.query.denominationOrIngredient).then((rows) => {
                 res.json(rows);
             });
         })
