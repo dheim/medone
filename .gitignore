@@ -3,3 +3,4 @@ client/public/js/*
 client/public/css/*
 .idea/
 medone.iml
+.vscode/
