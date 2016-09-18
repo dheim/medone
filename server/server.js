@@ -1,3 +1,5 @@
+'use strict';
+
 const express         = require('express');
 const bodyParser      = require('body-parser');
 const app             = express();
@@ -10,8 +12,15 @@ app.use(express.static(__dirname + '/../client/public', {
 
 app
     .use(bodyParser.json())
-    .use('/api', require('./routes')(app));
+    .use('/api', require('./routes')(app))
+		.use('/public', express.static(__dirname + '/../client/public'))
+		.use('*', (req, res) => {
+			res.sendFile(
+				require('path').resolve(__dirname + '/../client/public/index.html')
+			);
+		})
+		;
 
 server.listen(config.port, () => {
-    console.log(`Server started on port ${config.port}`);
+	console.info(`${Date()} - started on port ${config.port}`);
 });

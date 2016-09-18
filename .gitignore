@@ -1,6 +1,7 @@
 node_modules/
-client/public/js/*
-client/public/css/*
-.idea/
-medone.iml
 .vscode/
+.idea/
+
+medone.iml
+client/public/bundle*
+client/public/font*

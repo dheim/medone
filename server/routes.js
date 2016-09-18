@@ -8,22 +8,22 @@ let medoneRouter = () => {
     const drug = new Drug();
 
     router
-        .get('/patients', (req, res) => {
+        .get('/patient', (req, res) => {
             patient.get().then((rows) => {
                 res.json(rows);
             });
         })
-        .get('/patients/:id', (req, res) => {
+        .get('/patient/:id', (req, res) => {
             patient.get(req.params.id).then((rows) => {
                 res.json(rows);
             });
         })
-        .get('/drugs', (req, res) => {
+        .get('/drug', (req, res) => {
             drug.getAll(req.query.denominationOrIngredient).then((rows) => {
                 res.json(rows);
             });
         })
-        .get('/drugs/:id', (req, res) => {
+        .get('/drug/:id', (req, res) => {
             drug.get(req.params.id).then((rows) => {
                 res.json(rows);
             });

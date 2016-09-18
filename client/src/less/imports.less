@@ -1,0 +1,53 @@
+*, *:before, *:after {
+	box-sizing: border-box;
+}
+
+html, body {
+	margin: 0;
+	padding: 0;
+
+	cursor: default;
+}
+
+#main-container {
+	display: flex;
+	flex-flow: column;
+}
+
+#main-header {
+	height: 50px;
+
+
+	background-color: yellow;
+}
+
+#main-content {
+	border: 1px solid black;
+}
+
+
+.loading {
+  font-size: 30px;
+}
+
+.loading:after {
+  overflow: hidden;
+  display: inline-block;
+  vertical-align: bottom;
+  -webkit-animation: ellipsis steps(4,end) 900ms infinite;      
+  animation: ellipsis steps(4,end) 900ms infinite;
+  content: "\2026"; /* ascii code for the ellipsis character */
+  width: 0px;
+}
+
+@keyframes ellipsis {
+  to {
+    width: 1.25em;    
+  }
+}
+
+@-webkit-keyframes ellipsis {
+  to {
+    width: 1.25em;    
+  }
+}
