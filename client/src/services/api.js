@@ -1,10 +1,12 @@
+import 'babel-polyfill';
+
 class API {
 
 	constructor(base) {
 		this.base = base;
 	}
 
-	get(endpoint) {
+	async get(endpoint) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'GET'
 		}).then(res => res.json());

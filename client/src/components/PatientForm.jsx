@@ -11,10 +11,9 @@ class PatientForm extends Component {
 		this.state = {};
 	}
 
-	componentDidMount() {
-		api.get(`patient/${this.props.routeParams.id}`).then( (result) => {
-			this.setState({patient: result});
-		});
+	async componentDidMount() {
+		const patient = await api.get(`patient/${this.props.routeParams.id}`);
+		this.setState({patient});
 	}
 
 	save(event) {
@@ -22,7 +21,7 @@ class PatientForm extends Component {
 		let form = event.target;
 		let formData = new FormData(form);
 
-		api.post(form.getAttribute('data-action'), formData).then( (result) => {
+		api.put(form.getAttribute('data-action'), formData).then( (result) => {
 			console.log('Result: ', result)
 		});
 	}

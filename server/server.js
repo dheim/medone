@@ -18,8 +18,7 @@ app
 			res.sendFile(
 				require('path').resolve(__dirname + '/../client/public/index.html')
 			);
-		})
-		;
+		});
 
 server.listen(config.port, () => {
 	console.info(`${Date()} - started on port ${config.port}`);

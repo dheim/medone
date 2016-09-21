@@ -1,7 +1,11 @@
 import React, {Component} from 'react';
 
+import {api} from 'services/api';
+
 import {Link} from 'react-router';
 import {Gender} from 'components/VisualHelpers';
+
+import 'babel-polyfill';
 
 class PatientList extends Component {
 
@@ -10,12 +14,10 @@ class PatientList extends Component {
 		this.state = {};
 	}
 
-	componentDidMount() {
-		fetch('http://192.168.1.57:3000/api/patient').then(res => res.json()).then( (result) => {
-
-			let patients = result.slice(0, 20);
-
-			this.setState({patients});
+	async componentDidMount() {
+		const patients = await api.get('patient');
+		this.setState({
+			patients: patients.slice(0, 20)
 		});
 	}
 
