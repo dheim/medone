@@ -6,6 +6,11 @@ class API {
 		this.base = base;
 	}
 
+    /**
+     *
+     * @param {string} endpoint
+     * @returns {Promise}
+     */
 	async get(endpoint) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'GET'

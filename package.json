@@ -17,6 +17,7 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "multer": "^1.2.0",
+    "react-autosuggest": "^6.1.0",
     "sqlite3": "^3.1.4"
   },
   "devDependencies": {

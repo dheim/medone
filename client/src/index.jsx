@@ -11,19 +11,20 @@ import PrescriptionForm from 'components/PrescriptionForm';
 import 'font-awesome-webpack';
 import 'less/imports';
 
-class LandingPage extends Component {
+class AppComponent extends Component {
     render() {
         return (<div id="main-container">
             <Header/>
             <div id="main-content">
-                {this.props.children || <PatientList/>}
+                {this.props.children}
             </div>
         </div>);
     }
 }
 
 render(<Router history={hashHistory}>
-    <Route path="/" component={LandingPage}>
+    <Route component={AppComponent}>
+        <Route path="/" component={PatientList}/>
         <Route path="/patient/:id" component={PatientForm}/>
         <Route path="/prescription" component={PrescriptionForm}/>
     </Route>
