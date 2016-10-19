@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import DrugAutoComplete from './DrugAutoComplete';
+import DosageSet from './DosageSet';
 
 class PrescriptionForm extends Component {
 
@@ -12,11 +13,14 @@ class PrescriptionForm extends Component {
      *
      * @returns {XML}
      */
-    render(str) {
-        return (<div>
+    render() {
+        return (<div className="prescription-form">
             <h1>Prescription</h1>
             <form>
                 <DrugAutoComplete></DrugAutoComplete>
+                <DosageSet></DosageSet>
+                <button>Cancel</button>
+                <button type="submit">Save</button>
             </form>
         </div>);
     }
