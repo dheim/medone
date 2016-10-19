@@ -10,7 +10,7 @@ class DosageSet extends Component {
      */
     render() {
         return (
-            <div>
+            <div className="dosage-set">
                 <select>
                     <option value="MorningNoonEveningNight">Morning, Noon, Evening, Night</option>
                     <option value="SpecificTimes">Specific times</option>

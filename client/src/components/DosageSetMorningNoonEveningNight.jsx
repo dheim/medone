@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import Dosage from './Dosage'
 
 class DosageSetMorningNoonEveningNight extends Component {
 
@@ -9,22 +10,10 @@ class DosageSetMorningNoonEveningNight extends Component {
     render() {
         return (
             <div className="dosage-morning-noon-evening-night">
-                <div>
-                    <label>Morning</label>
-                    <input type="text"/>
-                </div>
-                <div>
-                    <label>Noon</label>
-                    <input type="text"/>
-                </div>
-                <div>
-                    <label>Evening</label>
-                    <input type="text"/>
-                </div>
-                <div>
-                    <label>Night</label>
-                    <input type="text"/>
-                </div>
+               <Dosage label="Morning"/>
+               <Dosage label="Noon"/>
+               <Dosage label="Evening"/>
+               <Dosage label="Night"/>
             </div>
         );
     }
