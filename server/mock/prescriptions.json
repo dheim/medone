@@ -1,0 +1,13 @@
+[
+  {
+    "drugDocId": 3250,
+    "drugName": "Panadol, Brausetabletten",
+    "dosageScheme": "MorningNoonEveningNight",
+    "dosageSet": {
+      "morning": 1,
+      "noon": 0,
+      "evening": 1,
+      "night": 1
+    }
+  }
+]

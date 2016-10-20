@@ -2,7 +2,7 @@ const config = require('../config');
 const sqlite = require('sqlite3');
 const path = require('path');
 
-const db = new sqlite.Database(path.join(__dirname, config.db));
+const db = new sqlite.Database(path.join(__dirname, config.dbMasterData));
 
 db.serialize(function () {
     db.run('DROP TABLE IF EXISTS patients');
