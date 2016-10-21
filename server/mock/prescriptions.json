@@ -1,7 +1,18 @@
 [
   {
-    "drugDocId": 3250,
-    "drugName": "Panadol, Brausetabletten",
+    "drugDocId": 10206,
+    "drugName": "Aspirin Tabletten",
+    "dosageScheme": "MorningNoonEveningNight",
+    "dosageSet": {
+      "morning": 1,
+      "noon": 0,
+      "evening": 1,
+      "night": 1
+    }
+  },
+  {
+    "drugDocId": 11146,
+    "drugName": "Inderal 40 mg, Tabletten",
     "dosageScheme": "MorningNoonEveningNight",
     "dosageSet": {
       "morning": 1,

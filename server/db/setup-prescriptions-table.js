@@ -10,15 +10,14 @@ db.serialize(function () {
         db.run(`CREATE TABLE prescriptions (
         id INTEGER PRIMARY KEY,
         patient_id INTEGER UNIQUE,
-        prescription TEXT
+        prescriptionsJson TEXT
     )`);
 
-        db.run(`INSERT INTO prescriptions (patient_id, prescription) VALUES (
+        db.run(`INSERT INTO prescriptions (patient_id, prescriptionsJson) VALUES (
             50014, 
-            '[
-              {
-                "drugDocId": 3250,
-                "drugName": "Panadol, Brausetabletten",
+            '[{
+                "drugDocId": 10206,
+                "drugName": "Aspirin Tabletten",
                 "dosageScheme": "MorningNoonEveningNight",
                 "dosageSet": {
                   "morning": 1,
@@ -26,8 +25,18 @@ db.serialize(function () {
                   "evening": 1,
                   "night": 1
                 }
-              }
-            ]'
-        )`)
+            },
+            {
+                "drugDocId": 11146,
+                "drugName": "Inderal 40 mg, Tabletten",
+                "dosageScheme": "MorningNoonEveningNight",
+                "dosageSet": {
+                  "morning": 0,
+                  "noon": 2,
+                  "evening": 0,
+                  "night": 2
+                }
+            }]'
+        )`);
     }
 );
