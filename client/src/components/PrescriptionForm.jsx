@@ -6,7 +6,9 @@ class PrescriptionForm extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            patientId: this.props.patientId
+        };
     }
 
     /**

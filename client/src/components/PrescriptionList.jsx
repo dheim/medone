@@ -1,4 +1,5 @@
 import React, {Component} from 'react';
+import PrescriptionForm from './PrescriptionForm';
 import {api} from 'services/api';
 
 class PrescriptionList extends Component {
@@ -9,11 +10,20 @@ class PrescriptionList extends Component {
     }
 
     async componentDidMount() {
-        const prescriptions = await api.get(`prescription?patientId=${this.props.location.query.patientId}`);
+        var patientId = this.props.location.query.patientId;
+        const prescriptions = await api.get(`prescription?patientId=${patientId}`);
         this.setState({
-            prescriptions: prescriptions.data[0].prescriptions
+            patientId: patientId,
+            prescriptions: prescriptions.data[0].prescriptions,
+            showPrescriptionForm: false
         });
     }
+
+    togglePrescriptionForm = () => {
+        this.setState({
+            showPrescriptionForm: !this.state.showPrescriptionForm
+        });
+    };
 
     /**
      *
@@ -25,6 +35,16 @@ class PrescriptionList extends Component {
         } else {
             return (
                 <div>
+                    <button onClick={this.togglePrescriptionForm}>Add prescription</button>
+                        {(() => {
+                            if (this.state.showPrescriptionForm) {
+                                return (
+                                    <div key="prescriptionForm">
+                                        <PrescriptionForm patientId="{this.state.patientId}"></PrescriptionForm>
+                                    </div>
+                                )
+                            }
+                        })()}
                     <table>
                         <thead>
                         <tr>
