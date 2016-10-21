@@ -7,6 +7,7 @@ import Header from 'components/Header';
 import PatientList from 'components/PatientList';
 import PatientForm from 'components/PatientForm';
 import PrescriptionForm from 'components/PrescriptionForm';
+import PrescriptionList from 'components/PrescriptionList';
 
 import 'font-awesome-webpack';
 import 'less/imports';
@@ -27,5 +28,6 @@ render(<Router history={hashHistory}>
         <Route path="/" component={PatientList}/>
         <Route path="/patient/:id" component={PatientForm}/>
         <Route path="/prescription" component={PrescriptionForm}/>
+        <Route path="/prescriptions" component={PrescriptionList}/>
     </Route>
 </Router>, document.getElementById('root'));

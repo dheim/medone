@@ -16,6 +16,7 @@ db.serialize(function () {
         db.run(`INSERT INTO prescriptions (patient_id, prescriptionsJson) VALUES (
             50014, 
             '[{
+                "id": 60111,
                 "drugDocId": 10206,
                 "drugName": "Aspirin Tabletten",
                 "dosageScheme": "MorningNoonEveningNight",
@@ -27,6 +28,7 @@ db.serialize(function () {
                 }
             },
             {
+                "id": 60112,
                 "drugDocId": 11146,
                 "drugName": "Inderal 40 mg, Tabletten",
                 "dosageScheme": "MorningNoonEveningNight",
