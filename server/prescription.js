@@ -25,30 +25,28 @@ class Prescription {
     getAll(patientId) {
         if (patientId) {
             return new Promise((resolve, reject) => {
-                db.all('SELECT * FROM prescriptions WHERE patient_id = ?', patientId, (err, rows) => {
-                    this.handleResult(resolve, reject, rows, err);
+                db.get('SELECT * FROM prescriptions WHERE patient_id = ?', patientId, (err, row) => {
+                    if (err) reject(err);
+
+                    let prescriptions = row ? JSON.parse(row.prescriptionsJson) : [];
+                    let data = {patientId, prescriptions};
+                    resolve({data});
                 });
 
             });
         } else {
             return new Promise((resolve, reject) => {
                 db.all('SELECT * FROM prescriptions', (err, rows) => {
-                    this.handleResult(resolve, reject, rows, err);
+                    if (err) reject(err);
+                    var data = rows.map(row => {
+                        let prescriptions = JSON.parse(row.prescriptionsJson);
+                        return {patientId: row.patient_id, prescriptions};
+                    });
+                    resolve({data});
                 });
 
             });
         }
-    }
-
-    handleResult(resolve, reject, rows, err) {
-        if (err) reject(err);
-
-        var data = rows.map(row => {
-            let prescriptions = JSON.parse(row.prescriptionsJson)
-            return {patientId: row.patient_id, prescriptions};
-        });
-
-        resolve({data});
     }
 }
 

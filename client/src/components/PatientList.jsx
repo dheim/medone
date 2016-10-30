@@ -46,6 +46,9 @@ class PatientList extends Component {
 						<td>
 							<Link to={`/patient/${patient.id}`}><i className="fa fa-list"/></Link>
 						</td>
+						<td>
+							<Link to={`/prescriptions?patientId=${patient.id}`}><i className="fa fa-medkit"/></Link>
+						</td>
 					</tr>);
 				})}
 				</tbody>

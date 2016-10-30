@@ -27,7 +27,6 @@ render(<Router history={hashHistory}>
     <Route component={AppComponent}>
         <Route path="/" component={PatientList}/>
         <Route path="/patient/:id" component={PatientForm}/>
-        <Route path="/prescription" component={PrescriptionForm}/>
         <Route path="/prescriptions" component={PrescriptionList}/>
     </Route>
 </Router>, document.getElementById('root'));

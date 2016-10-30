@@ -11,10 +11,10 @@ class PrescriptionList extends Component {
 
     async componentDidMount() {
         var patientId = this.props.location.query.patientId;
-        const prescriptions = await api.get(`prescription?patientId=${patientId}`);
+        const prescriptionsResponse = await api.get(`prescription?patientId=${patientId}`);
         this.setState({
             patientId: patientId,
-            prescriptions: prescriptions.data[0].prescriptions,
+            prescriptions: prescriptionsResponse.data.prescriptions,
             showPrescriptionForm: false
         });
     }
@@ -48,8 +48,8 @@ class PrescriptionList extends Component {
                     <table>
                         <thead>
                         <tr>
-                            <th>Medikament</th>
-                            <th>Dosierschema</th>
+                            <th>Drug</th>
+                            <th>Dosage scheme</th>
                         </tr>
                         </thead>
                         <tbody>
