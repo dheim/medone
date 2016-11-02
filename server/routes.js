@@ -1,14 +1,14 @@
-const express = require('express');
-const Patient = require('./patient');
-const Drug = require('./drug');
-const Prescription = require('./prescription');
-const multer	= require('multer')();
+const express				= require('express');
+const Patient 			= require('./patient');
+const Drug 					= require('./drug');
+const Prescription 	= require('./prescription');
+const multer 				= require('multer')();
 
 let medoneRouter = () => {
-    const router	= express.Router();
-    const patient = new Patient();
-    const drug		= new Drug();
-	const prescription = new Prescription();
+    const router				= express.Router();
+    const patient 			= new Patient();
+    const drug					= new Drug();
+		const prescription 	= new Prescription();
 
 		const patientRouter = express.Router();
 		const drugRouter		= express.Router();
