@@ -8,6 +8,7 @@ import TextField from 'material-ui/TextField';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
+import Snackbar from 'material-ui/Snackbar';
 
 import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
@@ -15,7 +16,9 @@ class PatientForm extends Component {
 
 	constructor(props) {
 		super(props);
-		this.state = {};
+		this.state = {
+			saved: false
+		};
 	}
 
 	async componentDidMount() {
@@ -29,7 +32,8 @@ class PatientForm extends Component {
 		let formData = new FormData(form);
 
 		api.put(form.getAttribute('data-action'), formData).then( (result) => {
-			this.props.history.push('/');
+			this.setState({saved: true});
+			//this.props.history.push('/');
 		});
 	}
 
@@ -61,6 +65,14 @@ class PatientForm extends Component {
 					<RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save" />} />
 					<RaisedButton label="back" secondary={true} href="/" containerElement={<Link to="/" />} />
 				</form>
+
+				<Snackbar
+          open={this.state.saved}
+          message="Saved!"
+          autoHideDuration={4000}
+          onRequestClose={this.handleRequestClose}
+        />
+
 			</div>);
 		} else {
 			return (<CircularProgress size={80} thickness={5} />);
