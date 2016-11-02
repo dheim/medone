@@ -2,7 +2,12 @@ import React, {Component} from 'react';
 
 import {api} from 'services/api';
 
-import {RadioGroup} from 'components/VisualHelpers';
+import TextField from 'material-ui/TextField';
+import CircularProgress from 'material-ui/CircularProgress';
+import RaisedButton from 'material-ui/RaisedButton';
+
+
+import {RadioButton, RadioButtonGroup} from 'material-ui/RadioButton';
 
 class PatientForm extends Component {
 
@@ -29,30 +34,34 @@ class PatientForm extends Component {
 	render() {
 		if (this.state.patient) {
 			return (<div>
-				<form onSubmit={this.save.bind(this)} data-action={`patient/${this.state.patient.id}`}>
-					<input type="number" name="id" defaultValue={this.state.patient.id}/>
+				<form id="patient-form" onSubmit={this.save.bind(this)} data-action={`patient/${this.state.patient.id}`}>
 
-					<input type="text" name="givenname" defaultValue={this.state.patient.givenname}/>
+					<TextField type="number" name="id" defaultValue={this.state.patient.id} />
+					<TextField type="text" name="givenname" defaultValue={this.state.patient.givenname} />
 
-					<input type="text" name="surname" defaultValue={this.state.patient.surname}/>
-					<input type="text" name="birthday" defaultValue={this.state.patient.birthday}/>
-					<input type="text" name="streetaddress" defaultValue={this.state.patient.streetaddress}/>
-					<input type="text" name="zipcode" defaultValue={this.state.patient.zipcode}/>
-					<input type="text" name="city" defaultValue={this.state.patient.city}/>
-					<input type="text" name="country" defaultValue={this.state.patient.country}/>
-					<input type="text" name="telephonenumber" defaultValue={this.state.patient.telephonenumber}/>
-					<input type="text" name="emailaddress" defaultValue={this.state.patient.emailaddress}/>
-					<input type="text" name="bloodtype" defaultValue={this.state.patient.bloodtype}/>
-					<input type="text" name="occupation" defaultValue={this.state.patient.occupation}/>
+					<TextField type="text" name="surname" defaultValue={this.state.patient.surname} />
+					<TextField type="text" name="birthday" defaultValue={this.state.patient.birthday} />
+					<TextField type="text" name="streetaddress" defaultValue={this.state.patient.streetaddress} />
+					<TextField type="text" name="zipcode" defaultValue={this.state.patient.zipcode} />
+					<TextField type="text" name="city" defaultValue={this.state.patient.city} />
+					<TextField type="text" name="country" defaultValue={this.state.patient.country} />
+					<TextField type="text" name="telephonenumber" defaultValue={this.state.patient.telephonenumber} />
+					<TextField type="text" name="emailaddress" defaultValue={this.state.patient.emailaddress} />
+					<TextField type="text" name="bloodtype" defaultValue={this.state.patient.bloodtype} />
+					<TextField type="text" name="occupation" defaultValue={this.state.patient.occupation} />
 
 
-					<RadioGroup name="gender" options={['f', 'm']} selected={this.state.patient.gender}/>
+					<RadioButtonGroup name="gender" defaultSelected={this.state.patient.gender}>
+						<RadioButton value="m" label="male" />
+						<RadioButton value="f" label="female" />
+					</RadioButtonGroup>
 
-					<button type="submit">Save</button>
+					<RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save" />} />
+					<RaisedButton label="back" secondary={true} href="/" />
 				</form>
 			</div>);
 		} else {
-			return <div><span className="loading">load patient-data</span></div>;
+			return (<CircularProgress size={80} thickness={5} />);
 		}
 	}
 }

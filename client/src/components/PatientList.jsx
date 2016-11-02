@@ -5,6 +5,10 @@ import {api} from 'services/api';
 import {Link} from 'react-router';
 import {Gender} from 'components/VisualHelpers';
 
+import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import CircularProgress from 'material-ui/CircularProgress';
+import IconButton from 'material-ui/IconButton';
+
 import 'babel-polyfill';
 
 class PatientList extends Component {
@@ -24,38 +28,45 @@ class PatientList extends Component {
 	render() {
 
 		if (this.state.patients) {
-			return (<div>
-				<table>
-				<thead>
-					<tr>
-						<th colSpan="2">#</th>
-						<th>name</th>
-						<th>surname</th>
-						<th>date of birth</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-				{this.state.patients.map( (patient) => {
-					return (<tr key={patient.id}>
-						<td>{patient.id}</td>
-						<td><Gender gender={patient.gender} /></td>
-						<td>{patient.givenname}</td>
-						<td>{patient.surname}</td>
-						<td>{patient.birthday}</td>
-						<td>
-							<Link to={`/patient/${patient.id}`}><i className="fa fa-list"/></Link>
-						</td>
-						<td>
-							<Link to={`/prescriptions?patientId=${patient.id}`}><i className="fa fa-medkit"/></Link>
-						</td>
-					</tr>);
-				})}
-				</tbody>
-				</table>
-			</div>);
+			return (
+				<Table>
+					<TableHeader displaySelectAll={false}>
+						<TableRow>
+							<TableHeaderColumn>#</TableHeaderColumn>
+							<TableHeaderColumn>gender</TableHeaderColumn>
+							<TableHeaderColumn>name</TableHeaderColumn>
+							<TableHeaderColumn>surname</TableHeaderColumn>
+							<TableHeaderColumn>date of birth</TableHeaderColumn>
+							<TableHeaderColumn></TableHeaderColumn>
+						</TableRow>
+					</TableHeader>
+					<TableBody displayRowCheckbox={false}>
+					{ this.state.patients.map( (patient) => {
+						return (<TableRow key={patient.id}>
+							<TableRowColumn>{patient.id}</TableRowColumn>
+							<TableRowColumn><Gender gender={patient.gender}/></TableRowColumn>
+							<TableRowColumn>{patient.givenname}</TableRowColumn>
+							<TableRowColumn>{patient.surname}</TableRowColumn>
+							<TableRowColumn>{patient.birthday}</TableRowColumn>
+							<TableRowColumn>
+								<Link to={`/patient/${patient.id}`}>
+									<IconButton
+										iconClassName="fa fa-id-card-o" tooltip="patient detail"
+										tooltipPosition="top-center"/>
+								</Link>
+								<Link to={`/prescriptions?patientId=${patient.id}`}>
+									<IconButton
+										iconClassName="fa fa-medkit" tooltip="prescriptions"
+										tooltipPosition="top-center"/>
+								</Link>
+							</TableRowColumn>
+						</TableRow>);
+					})};
+					</TableBody>
+				</Table>
+			);
 		} else {
-			return <div><span className="loading">load patients</span></div>;
+			return (<CircularProgress size={80} thickness={5} />);
 		}
 	}
 }

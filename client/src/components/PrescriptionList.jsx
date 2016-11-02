@@ -25,10 +25,6 @@ class PrescriptionList extends Component {
         });
     };
 
-    /**
-     *
-     * @returns {XML}
-     */
     render() {
         if (!this.state.prescriptions) {
             return <div>loading prescriptions...</div>
