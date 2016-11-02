@@ -26,8 +26,9 @@ let medoneRouter = () => {
 				});
 			})
 			.put('/:id', multer.array(), (req, res) => {
-				patient.update(req.body);
-				res.send(200);
+				patient.update(req.body).then( row => {
+					res.json(row);
+				});
 			});
 
 		drugRouter
