@@ -1,20 +1,22 @@
 import React, {Component} from 'react';
 import DosageSetMorningNoonEveningNight from './DosageSetMorningNoonEveningNight'
 
+import SelectField from 'material-ui/SelectField';
+import MenuItem from 'material-ui/MenuItem';
 
 class DosageSet extends Component {
 
-    /**
-     *
-     * @returns {XML}
-     */
     render() {
         return (
             <div className="dosage-set">
-                <select>
-                    <option value="MorningNoonEveningNight">Morning, Noon, Evening, Night</option>
-                    <option value="SpecificTimes">Specific times</option>
-                </select>
+
+                <SelectField
+                    floatingLabelText="Frequency"
+                    onChange={this.handleChange}>
+                    <MenuItem value="MorningNoonEveningNight" primaryText="Morning, Noon, Evening, Night" />
+                    <MenuItem value="SpecificTimes" primaryText="Specific times" />
+                </SelectField>
+
                 <DosageSetMorningNoonEveningNight/>
             </div>
         );

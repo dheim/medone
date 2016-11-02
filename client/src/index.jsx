@@ -25,7 +25,7 @@ class AppComponent extends Component {
                             showMenuIconButton={true}
                             iconClassNameLeft="fa fa-medkit"
                             />
-                    <div id="main-view">{this.props.children}</div>
+                <div id="main-view">{this.props.children}</div>
             </div>
         </MuiThemeProvider>);
     }

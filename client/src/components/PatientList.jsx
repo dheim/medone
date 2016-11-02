@@ -49,16 +49,14 @@ class PatientList extends Component {
 							<TableRowColumn>{patient.surname}</TableRowColumn>
 							<TableRowColumn>{patient.birthday}</TableRowColumn>
 							<TableRowColumn>
-								<Link to={`/patient/${patient.id}`}>
-									<IconButton
-										iconClassName="fa fa-id-card-o" tooltip="patient detail"
-										tooltipPosition="top-center"/>
-								</Link>
-								<Link to={`/prescriptions?patientId=${patient.id}`}>
-									<IconButton
-										iconClassName="fa fa-medkit" tooltip="prescriptions"
-										tooltipPosition="top-center"/>
-								</Link>
+								<IconButton
+									iconClassName="fa fa-id-card-o" tooltip="patient detail"
+									tooltipPosition="top-center"
+									containerElement={<Link to={`/patient/${patient.id}`} />} />
+								<IconButton
+									iconClassName="fa fa-medkit" tooltip="prescriptions"
+									tooltipPosition="top-center"
+									containerElement={<Link to={`/prescriptions?patientId=${patient.id}`} />} />
 							</TableRowColumn>
 						</TableRow>);
 					})};
