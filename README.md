@@ -1,7 +1,8 @@
 # Usage
 npm run dev
-
 node server/server.js
+mongod --dbpath ./server/db/mongodb/
+
 
 http://localhost:8080
 

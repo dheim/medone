@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
-
 import {Link} from 'react-router';
+
+import {api} from 'services/api';
 
 import DrugAutoComplete from './DrugAutoComplete';
 import DosageSet from './DosageSet';
@@ -16,15 +17,21 @@ class PrescriptionForm extends Component {
         };
     }
 
+    save() {
+        api.post('prescription/', JSON.stringify({drugDocId: 9988, drugName: 'Aspirin Bla'})).then((result) => {
+            console.log('prescription successfully saved');
+        });
+    }
+
     render() {
         return (<div className="prescription-form">
             <h1>Prescription</h1>
-            <form>
+            <form onSubmit={this.save}>
                 <DrugAutoComplete></DrugAutoComplete>
                 <DosageSet></DosageSet>
 
-                <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save" />} />
-                <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/" />} />
+                <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
+                <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/"/>}/>
             </form>
         </div>);
     }

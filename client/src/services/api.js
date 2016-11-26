@@ -20,6 +20,7 @@ class API {
 	post(endpoint, body) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'POST',
+			headers: this.createJsonHeaders(),
 			body
 		});
 	}
@@ -27,7 +28,15 @@ class API {
 	put(endpoint, body) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'PUT',
+			headers: this.createJsonHeaders(),
 			body
+		});
+	}
+
+	createJsonHeaders() {
+		return new Headers({
+			'Content-Type': 'application/json',
+			'Accept': 'application/json',
 		});
 	}
 }

@@ -5,3 +5,5 @@ node_modules/
 medone.iml
 client/public/bundle*
 client/public/font*
+
+server/db/mongodb
