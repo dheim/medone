@@ -18,7 +18,10 @@ class PrescriptionForm extends Component {
     }
 
     save() {
-        api.post('prescription/', JSON.stringify({drugDocId: 9988, drugName: 'Aspirin Bla'})).then((result) => {
+        api.post(`patient/${this.state.patientId}/prescriptions/`, JSON.stringify({
+            drugDocId: 9988,
+            drugName: 'Aspirin Bla'
+        })).then((result) => {
             console.log('prescription successfully saved');
         });
     }
@@ -26,11 +29,12 @@ class PrescriptionForm extends Component {
     render() {
         return (<div className="prescription-form">
             <h1>Prescription</h1>
-            <form onSubmit={this.save}>
+            <form>
                 <DrugAutoComplete></DrugAutoComplete>
                 <DosageSet></DosageSet>
 
-                <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
+                <RaisedButton label="save" primary={true} onClick={this.save.bind(this) }
+                              icon={<i className="fa fa-save"/>}/>
                 <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/"/>}/>
             </form>
         </div>);

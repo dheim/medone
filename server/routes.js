@@ -12,7 +12,6 @@ let medoneRouter = () => {
 
     const patientRouter = express.Router();
     const drugRouter = express.Router();
-    const prescriptionRouter = express.Router();
 
     mongoose.connect('mongodb://localhost/medone');
 
@@ -45,15 +44,26 @@ let medoneRouter = () => {
             });
         });
 
-    prescriptionRouter
-        .post('/', (req, res, next) => {
+    patientRouter
+        .get('/:patientId/prescriptions', (req, res) => {
+            Prescription.find({
+                patientId: req.params.patientId
+            }, (err, results) => {
+                res.json({data: results});
+            });
+
+        })
+
+        .post('/:patientId/prescriptions', (req, res, next) => {
             let prescription = new Prescription(req.body);
-            prescription.save(function(err, savedPrescription) {
+            prescription.patientId = req.params.patientId;
+            prescription.save(function (err, savedPrescription) {
                 if (err) {
                     var errorMessage = 'saving to mongodb failed: ' + err;
                     console.error(errorMessage);
                     res.statusCode = 500;
                     res.json({error: errorMessage});
+                    return;
                 }
                 console.log('prescription successfully saved');
                 res.json(prescription.toObject());
@@ -63,7 +73,6 @@ let medoneRouter = () => {
 
     router.use('/drug', drugRouter);
     router.use('/patient', patientRouter);
-    router.use('/prescription', prescriptionRouter);
 
     return router;
 };
