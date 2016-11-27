@@ -13,13 +13,21 @@ class PrescriptionList extends Component {
         this.state = {};
     }
 
-    async componentDidMount() {
+    componentDidMount() {
         const patientId = this.props.location.query.patientId;
-        const prescriptionsResponse = await api.get(`patient/${patientId}/prescriptions`);
         this.setState({
             patientId,
-            prescriptions: prescriptionsResponse.data,
             showPrescriptionForm: false
+        });
+
+        this.loadPrescriptions(patientId);
+    }
+
+    async loadPrescriptions(patientId) {
+        const prescriptionsResponse = await
+        api.get(`patient/${patientId}/prescriptions`);
+        this.setState({
+            prescriptions: prescriptionsResponse.data,
         });
     }
 
@@ -29,17 +37,24 @@ class PrescriptionList extends Component {
         });
     };
 
-    createDosageString(dosageSet) {
+    createDisposalOverview(dosageSet) {
         if (!dosageSet) {
             return '';
         }
 
-        if (dosageSet.dosageScheme === 'MorningNoonEveningNight') {
-            let dosages = dosageSet.dosages;
-            return `${dosages.morning || 0}, ${dosages.noon || 0}, ${dosages.evening || 0}, ${dosages.night || 0}`
-        } else {
-            // TODO create overview string for other dosage schemes
-            return ''
+
+        switch (dosageSet.dosageScheme) {
+            case 'MorningNoonEveningNight':
+                let disposals = dosageSet.disposalsMorningNoonEveningNight;
+                return `${disposals.morning || 0}, ${disposals.noon || 0}, ${disposals.evening || 0}, ${disposals.night || 0}`
+            case 'SpecificTimes':
+                return <ul>
+                    {dosageSet.disposalsSpecificTimes.map((disposal, index) => {
+                        return <li key={index}>{disposal.time}: {disposal.dosage}</li>
+                    })}
+                </ul>;
+            default:
+                return null;
         }
     }
 
@@ -59,7 +74,8 @@ class PrescriptionList extends Component {
                         if (this.state.showPrescriptionForm) {
                             return (
                                 <div key="prescriptionForm">
-                                    <PrescriptionForm patientId={this.state.patientId}></PrescriptionForm>
+                                    <PrescriptionForm patientId={this.state.patientId}
+                                                      onChange={() => this.loadPrescriptions(this.state.patientId)}></PrescriptionForm>
                                 </div>
                             )
                         }
@@ -78,7 +94,7 @@ class PrescriptionList extends Component {
                                 return <TableRow key={prescription._id}>
                                     <TableRowColumn>{prescription.drugName}</TableRowColumn>
                                     <TableRowColumn>{prescription.dosageSet ? prescription.dosageSet.dosageScheme : ''}</TableRowColumn>
-                                    <TableRowColumn>{this.createDosageString(prescription.dosageSet)}</TableRowColumn>
+                                    <TableRowColumn>{this.createDisposalOverview(prescription.dosageSet)}</TableRowColumn>
                                 </TableRow>
                             })};
                         </TableBody>

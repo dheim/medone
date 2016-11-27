@@ -1,5 +1,6 @@
 import React, {Component} from 'react';
 import DosageSetMorningNoonEveningNight from './DosageSetMorningNoonEveningNight'
+import DosageSetSpecificTimes from './DosageSetSpecificTimes'
 
 import SelectField from 'material-ui/SelectField';
 import MenuItem from 'material-ui/MenuItem';
@@ -11,28 +12,39 @@ class DosageSet extends Component {
         this.state = {};
     }
 
-    updateDosageScheme(event, key, payload) {
-        let dosageScheme = payload;
-
-        this.props.onChange(this.createDosageSet(dosageScheme, this.state.dosages));
+    updateDosageScheme(event, key, dosageScheme) {
+        this.props.onChange(this.createDosageSet(dosageScheme, this.state.disposalsMorningNoonEveningNight,
+            this.state.disposalsSpecificTimes));
 
         this.setState({
-            dosageScheme: payload
+            dosageScheme: dosageScheme
         });
     }
 
-    updateDosages(dosages) {
-        this.setState({
-            dosages: dosages
-        });
+    updateDisposals(disposals) {
+        if (this.state.dosageScheme === "MorningNoonEveningNight") {
+            this.setState({
+                disposalsMorningNoonEveningNight: disposals
+            });
 
-        this.props.onChange(this.createDosageSet(this.state.dosageScheme, dosages));
+            this.props.onChange(this.createDosageSet(this.state.dosageScheme, disposals, null));
+
+        }
+
+        if (this.state.dosageScheme === "SpecificTimes") {
+            this.setState({
+                disposalsSpecificTimes: disposals
+            });
+
+            this.props.onChange(this.createDosageSet(this.state.dosageScheme, null, disposals));
+        }
     }
 
-    createDosageSet(dosageScheme, dosages) {
+    createDosageSet(dosageScheme, disposalsMorningNoonEveningNight, disposalsSpecificTimes) {
         return {
             dosageScheme,
-            dosages
+            disposalsMorningNoonEveningNight,
+            disposalsSpecificTimes
         }
     }
 
@@ -48,7 +60,13 @@ class DosageSet extends Component {
                     <MenuItem value="SpecificTimes" primaryText="Specific times"/>
                 </SelectField>
 
-                <DosageSetMorningNoonEveningNight onChange={this.updateDosages.bind(this)}/>
+                {this.state.dosageScheme === 'MorningNoonEveningNight' ?
+                    <DosageSetMorningNoonEveningNight onChange={this.updateDisposals.bind(this)}/> : null
+                }
+
+                {this.state.dosageScheme === 'SpecificTimes' ?
+                    <DosageSetSpecificTimes onChange={this.updateDisposals.bind(this)}/> : null
+                }
             </div>
         );
     }

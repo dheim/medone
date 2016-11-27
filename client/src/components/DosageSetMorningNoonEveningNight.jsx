@@ -6,29 +6,29 @@ class DosageSetMorningNoonEveningNight extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dosages: {}
+            disposals: {}
         };
     }
 
-    handleChange(dosage) {
-        let dosages = {
-            morning: dosage.time == 'morning' ? dosage.quantity : this.state.dosages.morning,
-            noon: dosage.time == 'noon' ? dosage.quantity : this.state.dosages.noon,
-            evening: dosage.time == 'evening' ? dosage.quantity : this.state.dosages.evening,
-            night: dosage.time == 'night' ? dosage.quantity : this.state.dosages.night
+    handleChange(time, disposal) {
+        let disposals = {
+            morning: time === 'morning' ? disposal : this.state.disposals.morning,
+            noon: time === 'noon' ? disposal : this.state.disposals.noon,
+            evening: time === 'evening' ? disposal : this.state.disposals.evening,
+            night: time === 'night' ? disposal : this.state.disposals.night
         };
 
-        this.setState({dosages});
-        this.props.onChange(dosages);
+        this.setState({disposals});
+        this.props.onChange(disposals);
     }
 
     render() {
         return (
             <div className="dosage-morning-noon-evening-night">
-                <Dosage label="Morning" time="morning" onChange={this.handleChange.bind(this)}/>
-                <Dosage label="Noon" time="noon" onChange={this.handleChange.bind(this)}/>
-                <Dosage label="Evening" time="evening" onChange={this.handleChange.bind(this)}/>
-                <Dosage label="Night" time="night" onChange={this.handleChange.bind(this)}/>
+                <Dosage label="Morning" onChange={(event, value) => this.handleChange("morning", value)}/>
+                <Dosage label="Noon" onChange={(event, value) => this.handleChange("noon", value)}/>
+                <Dosage label="Evening" onChange={(event, value) => this.handleChange("evening", value)}/>
+                <Dosage label="Night" onChange={(event, value) => this.handleChange("night", value)}/>
             </div>
         );
     }

@@ -17,7 +17,7 @@ class PrescriptionForm extends Component {
         };
     }
 
-    save(event) {
+    handleSubmit(event) {
         event.preventDefault();
 
         if (!this.state.drug) {
@@ -25,6 +25,10 @@ class PrescriptionForm extends Component {
             return;
         }
 
+        this.save();
+    }
+
+    save() {
         let prescriptionData = {
             drugDocId: this.state.drug.docid,
             drugName: this.state.drug.preparation_denomination,
@@ -35,6 +39,8 @@ class PrescriptionForm extends Component {
             .then((result) => {
                 console.log('prescription successfully saved');
             });
+
+        this.props.onChange();
     }
 
     updateSelectedDrug(drug) {
@@ -49,10 +55,16 @@ class PrescriptionForm extends Component {
         })
     }
 
+    preventEnterFromSubmitting(event) {
+        if (event.key === 'Enter') {
+            event.preventDefault();
+        }
+    }
+
     render() {
         return (<div className="prescription-form">
             <h1>Prescription</h1>
-            <form onSubmit={this.save.bind(this) }>
+            <form onSubmit={(event) => this.handleSubmit(event)} onKeyPress={(event) => this.preventEnterFromSubmitting(event)}>
 
                 <DrugAutoComplete onDrugSelected={this.updateSelectedDrug.bind(this)}></DrugAutoComplete>
                 <div>Selected
