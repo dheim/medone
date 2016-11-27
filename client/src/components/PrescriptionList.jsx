@@ -29,6 +29,20 @@ class PrescriptionList extends Component {
         });
     };
 
+    createDosageString(dosageSet) {
+        if (!dosageSet) {
+            return '';
+        }
+
+        if (dosageSet.dosageScheme === 'MorningNoonEveningNight') {
+            let dosages = dosageSet.dosages;
+            return `${dosages.morning || 0}, ${dosages.noon || 0}, ${dosages.evening || 0}, ${dosages.night || 0}`
+        } else {
+            // TODO create overview string for other dosage schemes
+            return ''
+        }
+    }
+
     render() {
         if (!this.state.prescriptions) {
             return (<CircularProgress size={80} thickness={5}/>);
@@ -56,13 +70,15 @@ class PrescriptionList extends Component {
                             <TableRow>
                                 <TableHeaderColumn>Drug</TableHeaderColumn>
                                 <TableHeaderColumn>Dosage scheme</TableHeaderColumn>
+                                <TableHeaderColumn>Dosages</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
                             {this.state.prescriptions.map((prescription) => {
                                 return <TableRow key={prescription._id}>
                                     <TableRowColumn>{prescription.drugName}</TableRowColumn>
-                                    <TableRowColumn>{prescription.dosageScheme}</TableRowColumn>
+                                    <TableRowColumn>{prescription.dosageSet ? prescription.dosageSet.dosageScheme : ''}</TableRowColumn>
+                                    <TableRowColumn>{this.createDosageString(prescription.dosageSet)}</TableRowColumn>
                                 </TableRow>
                             })};
                         </TableBody>

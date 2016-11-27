@@ -2,8 +2,6 @@ import React, {Component} from 'react';
 import {api} from 'services/api';
 import AutoComplete from './AutoComplete';
 
-const getSuggestionValue = drug => drug.preparation_denomination;
-
 const renderSuggestion = suggestion => (
     <div>
         {suggestion.preparation_denomination}
@@ -16,7 +14,7 @@ class DrugAutoComplete extends Component {
         super();
 
         this.state = {
-            value: '',
+            displayedValue: '',
             suggestions: [],
             isLoading: false
         };
@@ -59,9 +57,14 @@ class DrugAutoComplete extends Component {
         });
     }
 
+    getSuggestionValue = (drug) => {
+        this.props.onDrugSelected(drug);
+        return drug.preparation_denomination;
+    };
+
     onChange = (event, {newValue}) => {
         this.setState({
-            value: newValue
+            displayedValue: newValue
         });
         event.stopPropagation();
     };
@@ -76,24 +79,24 @@ class DrugAutoComplete extends Component {
 
     clearInput = () => {
         this.setState({
-            value: ''
+            displayedValue: ''
         });
     };
 
     render() {
-        const {value, suggestions, isLoading} = this.state;
+        const {suggestions, isLoading} = this.state;
 
         // Autosuggest will pass through all these props to the input element.
         const inputProps = {
             placeholder: 'drug or ingredient',
-            value,
+            value: this.state.displayedValue,
             onChange: this.onChange
         };
 
         return (<AutoComplete suggestions={suggestions}
                               onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
                               onSuggestionsClearRequested={this.onSuggestionsClearRequested}
-                              getSuggestionValue={getSuggestionValue}
+                              getSuggestionValue={this.getSuggestionValue}
                               renderSuggestion={renderSuggestion}
                               inputProps={inputProps}
                               clearInput={this.clearInput}

@@ -17,24 +17,50 @@ class PrescriptionForm extends Component {
         };
     }
 
-    save() {
-        api.post(`patient/${this.state.patientId}/prescriptions/`, JSON.stringify({
-            drugDocId: 9988,
-            drugName: 'Aspirin Bla'
-        })).then((result) => {
-            console.log('prescription successfully saved');
-        });
+    save(event) {
+        event.preventDefault();
+
+        if (!this.state.drug) {
+            // TODO Form validation
+            return;
+        }
+
+        let prescriptionData = {
+            drugDocId: this.state.drug.docid,
+            drugName: this.state.drug.preparation_denomination,
+            dosageSet: this.state.dosageSet
+        };
+
+        api.post(`patient/${this.state.patientId}/prescriptions/`, JSON.stringify(prescriptionData))
+            .then((result) => {
+                console.log('prescription successfully saved');
+            });
+    }
+
+    updateSelectedDrug(drug) {
+        this.setState({
+            drug: drug
+        })
+    }
+
+    updateDosageSet(dosageSet) {
+        this.setState({
+            dosageSet: dosageSet
+        })
     }
 
     render() {
         return (<div className="prescription-form">
             <h1>Prescription</h1>
-            <form>
-                <DrugAutoComplete></DrugAutoComplete>
-                <DosageSet></DosageSet>
+            <form onSubmit={this.save.bind(this) }>
 
-                <RaisedButton label="save" primary={true} onClick={this.save.bind(this) }
-                              icon={<i className="fa fa-save"/>}/>
+                <DrugAutoComplete onDrugSelected={this.updateSelectedDrug.bind(this)}></DrugAutoComplete>
+                <div>Selected
+                    drug: {this.state.drug ? this.state.drug.preparation_denomination : ''}</div>
+
+                <DosageSet onChange={this.updateDosageSet.bind(this)}></DosageSet>
+
+                <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
                 <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/"/>}/>
             </form>
         </div>);
