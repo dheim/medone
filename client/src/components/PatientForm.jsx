@@ -23,6 +23,7 @@ class PatientForm extends Component {
 
 	async componentDidMount() {
 		const patient = await api.get(`patient/${this.props.routeParams.id}`);
+		patient.birthday = new Date(patient.birthday);
 		this.setState({patient});
 	}
 
@@ -46,7 +47,7 @@ class PatientForm extends Component {
 					<TextField type="text" name="givenname" floatingLabelText="givenname" defaultValue={this.state.patient.givenname} />
 
 					<TextField type="text" name="surname" floatingLabelText="surname" defaultValue={this.state.patient.surname} />
-					<DatePicker name="birthday" floatingLabelText="birthday" value={this.state.patient.birthday} />
+					<DatePicker name="birthday" floatingLabelText="birthday" defaultDate={this.state.birthday} />
 
 					<TextField type="text" name="streetaddress" floatingLabelText="address" defaultValue={this.state.patient.streetaddress} />
 					<TextField type="text" name="zipcode" floatingLabelText="zipcode" defaultValue={this.state.patient.zipcode} />
