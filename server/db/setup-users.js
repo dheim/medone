@@ -36,7 +36,7 @@ function saveUsers(users) {
 
             processed++;
             if (processed == users.length) {
-                process.exit();
+                mongoose.disconnect();
             }
         });
     })
