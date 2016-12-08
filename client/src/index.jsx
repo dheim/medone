@@ -6,9 +6,9 @@ import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
+import LoginForm from 'components/LoginForm';
 import PatientList from 'components/PatientList';
 import PatientForm from 'components/PatientForm';
-import PrescriptionForm from 'components/PrescriptionForm';
 import PrescriptionList from 'components/PrescriptionList';
 
 import AppBar from 'material-ui/AppBar';
@@ -22,9 +22,8 @@ class AppComponent extends Component {
         return (<MuiThemeProvider>
             <div>
                 <AppBar title="medONE"
-                            showMenuIconButton={true}
-                            iconClassNameLeft="fa fa-medkit"
-                            />
+                        showMenuIconButton={true}
+                        iconClassNameLeft="fa fa-medkit"/>
                 <div id="main-view">{this.props.children}</div>
             </div>
         </MuiThemeProvider>);
@@ -33,7 +32,9 @@ class AppComponent extends Component {
 
 render(<Router history={hashHistory}>
     <Route component={AppComponent}>
-        <Route path="/" component={PatientList}/>
+        <Route path="/" component={LoginForm}/>
+        <Route path="/login" component={LoginForm}/>
+        <Route path="/patientlist" component={PatientList}/>
         <Route path="/patient/:id" component={PatientForm}/>
         <Route path="/prescriptions" component={PrescriptionList}/>
     </Route>

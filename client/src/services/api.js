@@ -13,31 +13,36 @@ class API {
      */
 	async get(endpoint) {
 		return fetch(`${this.base}/${endpoint}`, {
-			method: 'GET'
+			method: 'GET',
+            headers: this.createHeaders()
 		}).then(res => res.json());
 	}
 
 	post(endpoint, body) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'POST',
-			headers: this.createJsonHeaders(),
-			body
+			headers: this.createHeaders(),
+            body
 		});
 	}
 
 	put(endpoint, body) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'PUT',
-			headers: this.createJsonHeaders(),
+			headers: this.createHeaders(),
 			body
 		});
 	}
 
-	createJsonHeaders() {
-		return new Headers({
-			'Content-Type': 'application/json',
-			'Accept': 'application/json',
-		});
+	createHeaders() {
+        let token = localStorage.getItem('token');
+        let tokenHeader = token ? {'x-access-token': token} : {};
+
+        return new Headers({
+            ...tokenHeader,
+            'Content-Type': 'application/json',
+            'Accept': 'application/json',
+        });
 	}
 }
 
