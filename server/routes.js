@@ -15,9 +15,33 @@ let medoneRouter = () => {
 
     const authenticationRouter = express.Router();
     const patientRouter = express.Router();
+    patientRouter.use(checkTokenMiddleware);
     const drugRouter = express.Router();
+    drugRouter.use(checkTokenMiddleware);
 
     mongoose.connect('mongodb://localhost/medone');
+
+
+    function checkTokenMiddleware(req, res, next) {
+        var token = req.body.token || req.query.token || req.headers['x-access-token'];
+
+        if (!token) {
+            return res.status(403).send({
+                success: false,
+                message: 'No token provided.'
+            });
+        }
+
+        jwt.verify(token, config.secret, function (err, decodedToken) {
+            if (err) {
+                return res.json({success: false, message: 'Failed to authenticate token.'});
+            } else {
+                // save to request for use in other routes
+                req.decodedToken = decodedToken;
+                next();
+            }
+        });
+    }
 
     authenticationRouter
         .post('/', (req, res) => {
@@ -26,17 +50,14 @@ let medoneRouter = () => {
             }, function (err, user) {
                 if (err) throw err;
 
-                if (!user) {
-                    res.json({success: false, message: 'Authentication failed. User not found.'});
-                    return;
+                if (!user || user.password != req.body.password) {
+                    return res.status(403).send({
+                        success: false,
+                        message: 'Authentiation failed'
+                    });
                 }
 
-                if (user.password != req.body.password) {
-                    res.json({success: false, message: 'Authentication failed. Wrong password.'});
-                    return;
-                }
-
-                var token = jwt.sign(user, config.secret, {
+                var token = jwt.sign({username: user.username, role: user.role}, config.secret, {
                     expiresIn: '1h'
                 });
 
@@ -88,6 +109,13 @@ let medoneRouter = () => {
         })
 
         .post('/:patientId/prescriptions', (req, res, next) => {
+            if (req.decodedToken.role !== 'DOCTOR') {
+                return res.status(403).send({
+                    success: false,
+                    message: 'Permission denied'
+                });
+            }
+
             let prescription = new Prescription(req.body);
             prescription.patientId = req.params.patientId;
             prescription.save(function (err, savedPrescription) {
