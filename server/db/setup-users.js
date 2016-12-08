@@ -11,16 +11,34 @@ var doctor = new User({
     role: 'DOCTOR'
 });
 
-saveUser(doctor);
+var nurse = new User({
+    username: 'nurse',
+    lastName: 'Meyer',
+    firstName: 'Andrea',
+    password: '1234',
+    role: 'NURSE'
+});
 
-function saveUser(user) {
-    user.save(function (err, savedUser) {
-        if (err) {
-            var errorMessage = 'saving of user ' + user.lastName + ' to mongodb failed: ' + err;
-            console.error(errorMessage);
-            return;
-        }
-        console.log('user ' + user.lastName + ' successfully saved');
-    });
+saveUsers([doctor, nurse]);
+
+
+function saveUsers(users) {
+    let processed = 0;
+    users.forEach((user) => {
+        user.save(function (err, savedUser) {
+            if (err) {
+                var errorMessage = 'saving of user ' + user.lastName + ' to mongodb failed: ' + err;
+                console.error(errorMessage);
+                return;
+            } else {
+                console.log('user ' + user.lastName + ' successfully saved');
+            }
+
+            processed++;
+            if (processed == users.length) {
+                process.exit();
+            }
+        });
+    })
 }
 
