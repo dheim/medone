@@ -2,18 +2,51 @@ const express = require('express');
 const Patient = require('./patient');
 const Drug = require('./drug');
 const Prescription = require('./models/Prescription.js');
+const User = require('./models/User');
 const multer = require('multer')();
 var mongoose = require('mongoose');
+const jwt = require('jsonwebtoken');
+const config = require('./config');
 
 let medoneRouter = () => {
     const router = express.Router();
     const patient = new Patient();
     const drug = new Drug();
 
+    const authenticationRouter = express.Router();
     const patientRouter = express.Router();
     const drugRouter = express.Router();
 
     mongoose.connect('mongodb://localhost/medone');
+
+    authenticationRouter
+        .post('/', (req, res) => {
+            User.findOne({
+                username: req.body.username
+            }, function (err, user) {
+                if (err) throw err;
+
+                if (!user) {
+                    res.json({success: false, message: 'Authentication failed. User not found.'});
+                    return;
+                }
+
+                if (user.password != req.body.password) {
+                    res.json({success: false, message: 'Authentication failed. Wrong password.'});
+                    return;
+                }
+
+                var token = jwt.sign(user, config.secret, {
+                    expiresIn: '1h'
+                });
+
+                res.json({
+                    success: true,
+                    message: 'Welcome to medone!',
+                    token: token
+                });
+            })
+        });
 
     patientRouter
         .get('/', (req, res) => {
@@ -71,6 +104,7 @@ let medoneRouter = () => {
         });
 
 
+    router.use('/authentication', authenticationRouter);
     router.use('/drug', drugRouter);
     router.use('/patient', patientRouter);
 
