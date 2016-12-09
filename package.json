@@ -21,6 +21,7 @@
     "morgan": "^1.7.0",
     "multer": "^1.2.0",
     "react-autosuggest": "^6.1.0",
+    "sql-query": "^0.1.26",
     "sqlite3": "^3.1.8"
   },
   "devDependencies": {

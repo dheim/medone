@@ -26,7 +26,7 @@ let medoneRouter = () => {
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
 
         if (!token) {
-            return res.status(403).send({
+            return res.status(403).json({
                 success: false,
                 message: 'No token provided.'
             });
@@ -34,7 +34,10 @@ let medoneRouter = () => {
 
         jwt.verify(token, config.secret, function (err, decodedToken) {
             if (err) {
-                return res.json({success: false, message: 'Failed to authenticate token.'});
+                return res.status(403).json({
+                    success: false,
+                    message: 'Invalid token.'
+                });
             } else {
                 // save to request for use in other routes
                 req.decodedToken = decodedToken;
@@ -48,10 +51,8 @@ let medoneRouter = () => {
             User.findOne({
                 username: req.body.username
             }, function (err, user) {
-                if (err) throw err;
-
-                if (!user || user.password != req.body.password) {
-                    return res.status(403).send({
+                if (err || !user || user.password != req.body.password) {
+                    return res.status(403).json({
                         success: false,
                         message: 'Authentiation failed'
                     });
@@ -71,7 +72,8 @@ let medoneRouter = () => {
 
     patientRouter
         .get('/', (req, res) => {
-            patient.get().then(rows => {
+            patient.get(req.param.pid, req.query
+            ).then(rows => {
                 res.json(rows);
             });
         })

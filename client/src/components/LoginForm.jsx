@@ -28,7 +28,7 @@ class LoginForm extends Component {
 
             response.json().then((body) => {
                 localStorage.setItem('token', body.token);
-                this.props.router.push('/patientlist');
+                this.props.router.push('/patientsearch');
             });
 
         }).catch((err) => {
