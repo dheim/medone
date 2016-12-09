@@ -25,10 +25,10 @@ class DosageSetMorningNoonEveningNight extends Component {
     render() {
         return (
             <div className="dosage-morning-noon-evening-night">
-                <Dosage label="Morning" onChange={(event, value) => this.handleChange("morning", value)}/>
-                <Dosage label="Noon" onChange={(event, value) => this.handleChange("noon", value)}/>
-                <Dosage label="Evening" onChange={(event, value) => this.handleChange("evening", value)}/>
-                <Dosage label="Night" onChange={(event, value) => this.handleChange("night", value)}/>
+                <Dosage label="Morning" unity={this.props.unity} onChange={(event, value) => this.handleChange("morning", value)}/>
+                <Dosage label="Noon" unity={this.props.unity} onChange={(event, value) => this.handleChange("noon", value)}/>
+                <Dosage label="Evening" unity={this.props.unity} onChange={(event, value) => this.handleChange("evening", value)}/>
+                <Dosage label="Night" unity={this.props.unity} onChange={(event, value) => this.handleChange("night", value)}/>
             </div>
         );
     }

@@ -62,7 +62,7 @@ class DosageSetSpecificTimes extends Component {
                                            onChange={(event, value) => this.updateTime(index, value)}/>
                             </TableRowColumn>
                             <TableRowColumn>
-                                <Dosage name={'dosage' + index} label='Dosage'
+                                <Dosage name={'dosage' + index} label='Dosage' unity={this.props.unity}
                                         onChange={(event, value) => this.updateDosage(index, value)}/>
                             </TableRowColumn>
                             <TableRowColumn>

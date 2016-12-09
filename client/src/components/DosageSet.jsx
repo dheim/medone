@@ -61,11 +61,11 @@ class DosageSet extends Component {
                 </SelectField>
 
                 {this.state.dosageScheme === 'MorningNoonEveningNight' ?
-                    <DosageSetMorningNoonEveningNight onChange={this.updateDisposals.bind(this)}/> : null
+                    <DosageSetMorningNoonEveningNight unity={this.props.unity} onChange={this.updateDisposals.bind(this)}/> : null
                 }
 
                 {this.state.dosageScheme === 'SpecificTimes' ?
-                    <DosageSetSpecificTimes onChange={this.updateDisposals.bind(this)}/> : null
+                    <DosageSetSpecificTimes unity={this.props.unity} onChange={this.updateDisposals.bind(this)}/> : null
                 }
             </div>
         );

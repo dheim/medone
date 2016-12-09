@@ -32,6 +32,7 @@ class PrescriptionForm extends Component {
         let prescriptionData = {
             drugDocId: this.state.drug.docid,
             drugName: this.state.drug.preparation_denomination,
+            unity: this.state.drug.unity,
             dosageSet: this.state.dosageSet
         };
 
@@ -70,7 +71,7 @@ class PrescriptionForm extends Component {
                 <div>Selected
                     drug: {this.state.drug ? this.state.drug.preparation_denomination : ''}</div>
 
-                <DosageSet onChange={this.updateDosageSet.bind(this)}></DosageSet>
+                <DosageSet unity={this.state.drug ? this.state.drug.unity : ''} onChange={this.updateDosageSet.bind(this)}></DosageSet>
 
                 <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
                 <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/"/>}/>

@@ -87,6 +87,7 @@ class PrescriptionList extends Component {
                                 <TableHeaderColumn>Drug</TableHeaderColumn>
                                 <TableHeaderColumn>Dosage scheme</TableHeaderColumn>
                                 <TableHeaderColumn>Dosages</TableHeaderColumn>
+                                <TableHeaderColumn>Unity</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
@@ -95,6 +96,7 @@ class PrescriptionList extends Component {
                                     <TableRowColumn>{prescription.drugName}</TableRowColumn>
                                     <TableRowColumn>{prescription.dosageSet ? prescription.dosageSet.dosageScheme : ''}</TableRowColumn>
                                     <TableRowColumn>{this.createDisposalOverview(prescription.dosageSet)}</TableRowColumn>
+                                    <TableRowColumn>{prescription.unity}</TableRowColumn>
                                 </TableRow>
                             })};
                         </TableBody>

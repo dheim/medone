@@ -9,6 +9,7 @@ class Dosage extends Component {
             <div>
                 <TextField type="number" name={this.props.name} floatingLabelText={this.props.label}
                            onChange={(event, value) => this.props.onChange(event, value)}/>
+                <span>{this.props.unity}</span>
             </div>
         );
     }
