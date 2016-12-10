@@ -14,7 +14,6 @@ class DrugAutoComplete extends Component {
         super();
 
         this.state = {
-            displayedValue: '',
             suggestions: [],
             isLoading: false
         };
@@ -58,29 +57,25 @@ class DrugAutoComplete extends Component {
     }
 
     getSuggestionValue = (drug) => {
-        this.props.onDrugSelected(drug);
+        this.props.onChange('drug', drug);
         return drug.preparation_denomination;
     };
 
     onChange = (event, {newValue}) => {
-        this.setState({
-            displayedValue: newValue
-        });
+        this.props.onChange('searchTerm', newValue);
         event.stopPropagation();
     };
 
-    onSuggestionsFetchRequested = ({value}) => {
+    onSuggestionsFetchRequested({value}) {
         this.updateSuggestions(value);
-    };
+    }
 
-    onSuggestionsClearRequested = () => {
+    onSuggestionsClearRequested() {
         this.clearSuggestions();
-    };
+    }
 
     clearInput = () => {
-        this.setState({
-            displayedValue: ''
-        });
+        this.props.onChange('searchTerm', '');
     };
 
     render() {
@@ -89,13 +84,13 @@ class DrugAutoComplete extends Component {
         // Autosuggest will pass through all these props to the input element.
         const inputProps = {
             placeholder: 'drug or ingredient',
-            value: this.state.displayedValue,
+            value: this.props.searchTerm,
             onChange: this.onChange
         };
 
         return (<AutoComplete suggestions={suggestions}
-                              onSuggestionsFetchRequested={this.onSuggestionsFetchRequested}
-                              onSuggestionsClearRequested={this.onSuggestionsClearRequested}
+                              onSuggestionsFetchRequested={(searchTerm) => this.onSuggestionsFetchRequested(searchTerm)}
+                              onSuggestionsClearRequested={() => this.onSuggestionsClearRequested()}
                               getSuggestionValue={this.getSuggestionValue}
                               renderSuggestion={renderSuggestion}
                               inputProps={inputProps}

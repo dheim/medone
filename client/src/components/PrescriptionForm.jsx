@@ -13,8 +13,13 @@ class PrescriptionForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            patientId: this.props.patientId
+            patientId: this.props.patientId,
+            searchTerm: ''
         };
+    }
+
+    handleChange(field, value) {
+        this.setState({[field]: value});
     }
 
     handleSubmit(event) {
@@ -41,19 +46,12 @@ class PrescriptionForm extends Component {
                 console.log('prescription successfully saved');
             });
 
+        this.setState({
+            drug: null,
+            searchTerm: ''
+        });
+
         this.props.onChange();
-    }
-
-    updateSelectedDrug(drug) {
-        this.setState({
-            drug: drug
-        })
-    }
-
-    updateDosageSet(dosageSet) {
-        this.setState({
-            dosageSet: dosageSet
-        })
     }
 
     preventEnterFromSubmitting(event) {
@@ -65,13 +63,17 @@ class PrescriptionForm extends Component {
     render() {
         return (<div className="prescription-form">
             <h1>Prescription</h1>
-            <form onSubmit={(event) => this.handleSubmit(event)} onKeyPress={(event) => this.preventEnterFromSubmitting(event)}>
+            <form onSubmit={(event) => this.handleSubmit(event)}
+                  onKeyPress={(event) => this.preventEnterFromSubmitting(event)}>
 
-                <DrugAutoComplete onDrugSelected={this.updateSelectedDrug.bind(this)}></DrugAutoComplete>
-                <div>Selected
-                    drug: {this.state.drug ? this.state.drug.preparation_denomination : ''}</div>
+                <DrugAutoComplete
+                    onChange={(field, value) => this.handleChange(field, value)}
+                    drug={this.state.drug}
+                    searchTerm={this.state.searchTerm}/>
+                <div>Selected drug: {this.state.drug ? this.state.drug.preparation_denomination : ''}</div>
 
-                <DosageSet unity={this.state.drug ? this.state.drug.unity : ''} onChange={this.updateDosageSet.bind(this)}></DosageSet>
+                <DosageSet unity={this.state.drug ? this.state.drug.unity : ''}
+                           onChange={(dosageSet) => this.handleChange('dosageSet', dosageSet)}/>
 
                 <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
                 <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/"/>}/>
