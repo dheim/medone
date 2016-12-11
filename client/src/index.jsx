@@ -12,10 +12,29 @@ import PrescriptionList from 'components/PrescriptionList';
 import PatientSearchPage from './components/PatientSearchPage';
 
 import AppBar from 'material-ui/AppBar';
+import FlatButton from 'material-ui/FlatButton';
+import {token} from 'services/token';
 
 import 'font-awesome-webpack';
 import 'less/imports';
 
+class AppAccountState extends Component {
+
+    logout() {
+        localStorage.removeItem('token');
+        hashHistory.push('/');
+    }
+
+    render() {
+        const _token = token.get();
+        
+        if (_token) {
+            return (<FlatButton onClick={this.logout.bind(this)} label={(<span>{_token.username} <i className="fa fa-sign-out"/></span>)}/>);
+        } else {
+            return (<FlatButton href="/" label="Login" />);
+        }
+    }
+}
 
 class AppComponent extends Component {
     render() {
@@ -24,21 +43,29 @@ class AppComponent extends Component {
                 <div>
                     <AppBar title="medONE"
                             showMenuIconButton={true}
-                            iconClassNameLeft="fa fa-medkit"/>
+                            iconClassNameLeft="fa fa-medkit"
+                            iconElementRight={<AppAccountState/>}
+                            />
                     <div id="main-view">{this.props.children}</div>
                 </div>
             </MuiThemeProvider>);
     }
 }
 
+class LandingPage extends Component {
+    render() {
+        return (<div>
+            {token.get() ? <PatientSearchPage/> : <LoginForm/>}
+        </div>);
+    }
+}
+
 render(
     <Router history={hashHistory}>
         <Route component={AppComponent}>
-            <Route path="/" component={LoginForm}/>
-            <Route path="/login" component={LoginForm}/>
-            <Route path="/patientsearch" component={PatientSearchPage}/>
             <Route path="/patient/:id" component={PatientForm}/>
             <Route path="/prescriptions" component={PrescriptionList}/>
+            <Route path="*" component={LandingPage}/>
         </Route>
     </Router>,
     document.getElementById('root'));

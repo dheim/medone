@@ -1,6 +1,7 @@
 import React, {Component} from 'react';
 import { withRouter } from 'react-router'
 import {api} from 'services/api';
+import {token} from 'services/token';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
@@ -27,8 +28,8 @@ class LoginForm extends Component {
             }
 
             response.json().then((body) => {
-                localStorage.setItem('token', body.token);
-                this.props.router.push('/patientsearch');
+                token.set(body.token);
+                this.props.router.push('/');
             });
 
         }).catch((err) => {
@@ -53,7 +54,7 @@ class LoginForm extends Component {
                         <TextField type="text" name="username" className="login__input" floatingLabelText="Username" autoFocus={true} onChange={(event) => this.updateUsername(event)}/>
                     </div>
                     <div>
-                        <TextField type="password" name="password" className="login__input"floatingLabelText="Password"onChange={(event) => this.updatePassword(event)}/>
+                        <TextField type="password" name="password" className="login__input" floatingLabelText="Password" onChange={(event) => this.updatePassword(event)}/>
                     </div>
                     <div>
                         <RaisedButton label="Login" primary={true} type="submit"/>

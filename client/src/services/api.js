@@ -1,4 +1,5 @@
 import 'babel-polyfill';
+import {hashHistory} from 'react-router';
 
 class API {
 
@@ -6,16 +7,25 @@ class API {
 		this.base = base;
 	}
 
-    /**
-     *
-     * @param {string} endpoint
-     * @returns {Promise}
-     */
+	handleError(res) {
+		if (res.status === 403) {
+			hashHistory.push('/');
+		}
+		return res;
+	}
+
+  /**
+   *
+   * @param {string} endpoint
+   * @returns {Promise}
+   */
 	async get(endpoint) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'GET',
-            headers: this.createHeaders()
-		}).then(res => res.json());
+			headers: this.createHeaders()
+		})
+		.then(this.handleError)
+		.then(res => res.json());
 	}
 
 	post(endpoint, body) {
