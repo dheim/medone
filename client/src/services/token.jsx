@@ -10,9 +10,13 @@ class Token {
 		return jwtDecode(token);
 	}
 
-	get() {
+	get(untouched = false) {
 		const token = localStorage.getItem(this.key);
-		return (token) ? this.decode(token) : null;
+		if (token) {
+			return (untouched) ? token : this.decode(token);
+		} else {
+			return false;
+		}
 	}
 
 	set(token) {

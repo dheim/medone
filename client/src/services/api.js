@@ -1,5 +1,6 @@
 import 'babel-polyfill';
 import {hashHistory} from 'react-router';
+import {token} from 'services/token';
 
 class API {
 
@@ -14,11 +15,11 @@ class API {
 		return res;
 	}
 
-  /**
-   *
-   * @param {string} endpoint
-   * @returns {Promise}
-   */
+	/**
+	 *
+	 * @param {string} endpoint
+	 * @returns {Promise}
+	 */
 	async get(endpoint) {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'GET',
@@ -32,8 +33,8 @@ class API {
 		return fetch(`${this.base}/${endpoint}`, {
 			method: 'POST',
 			headers: this.createHeaders(),
-            body
-		});
+			body
+		}).then(this.handleError);
 	}
 
 	put(endpoint, body) {
@@ -41,18 +42,18 @@ class API {
 			method: 'PUT',
 			headers: this.createHeaders(),
 			body
-		});
+		}).then(this.handleError);
 	}
 
 	createHeaders() {
-        let token = localStorage.getItem('token');
-        let tokenHeader = token ? {'x-access-token': token} : {};
+		const _token = token.get(true);
+		let tokenHeader = _token ? {'x-access-token': _token} : {};
 
-        return new Headers({
-            ...tokenHeader,
-            'Content-Type': 'application/json',
-            'Accept': 'application/json',
-        });
+		return new Headers({
+				...tokenHeader,
+				'Content-Type': 'application/json',
+				'Accept': 'application/json',
+		});
 	}
 }
 
