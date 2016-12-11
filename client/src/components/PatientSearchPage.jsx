@@ -5,6 +5,8 @@ import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import {api} from 'services/api';
 
+import TextField from 'material-ui/TextField';
+
 import 'babel-polyfill';
 
 class PatientSearchPage extends Component {
@@ -20,15 +22,16 @@ class PatientSearchPage extends Component {
             loading: true
         });
 
-        let queryString = this.createQueryString(criteria);
-
+        const queryString = this.createQueryString(criteria);
         api.get(`patient?${queryString}`).then((patients) => {
-            this.setState({
-                patients: patients.slice(0, 100),
-                loading: false
-            });
+            let actions = { loading: false, patients: [] };
+            if (patients.length > 0) {
+                actions.patients = patients.slice(0, 100);
+            }
+            this.setState(actions);
+        }).catch( (error) => {
+            console.error(error);
         });
-
     }
 
     createQueryString(criteria) {
@@ -42,10 +45,10 @@ class PatientSearchPage extends Component {
 
     render() {
         return (
-            <div>
-                <PatientSearchForm search={(criteria) => this.search(criteria)}/>
-                <Divider/>
-                {this.state.loading ? <CircularProgress size={80} thickness={5}/> : null}
+            <div id="patient-search">
+                <PatientSearchForm search={(criteria) => this.search(criteria)} />
+                {this.state.loading ? <div className="patient-search__loading"><CircularProgress size={80} thickness={5}/></div> : null}
+
                 {!this.state.loading ? <PatientList patients={this.state.patients}/> : null}
             </div>
         )

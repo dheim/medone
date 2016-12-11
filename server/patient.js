@@ -16,29 +16,43 @@ class Patient {
                 });
             }
 
-            var namedSqlParameters = this.createNamedSqlParameters(queryParams);
+            if (queryParams.search) {
+                const query = `SELECT * FROM patients WHERE id = ?
+                OR (
+                    givenname || ' '|| surname LIKE ?
+                    OR
+                    surname || ' ' || givenname LIKE ?
+                )`;
+                db.all(query, [parseInt(queryParams.search), `%${queryParams.search}%`, `%${queryParams.search}%`], (err, rows) => {
+                    if (err) reject(err);
+                    if (rows) rows = rows.slice(0, 50);
+                    resolve(rows);
+                });
+            } else {
+                var namedSqlParameters = this.createNamedSqlParameters(queryParams);
 
-            let sqlSelect = sqlBuilder.Query().select();
-            let sql = sqlSelect
-                .from('patients')
-                .where(namedSqlParameters)
-                .build();
-
-            db.all(sql, (err, rows) => {
-                if (err) reject(err);
-                resolve(rows);
-            });
-
+                let sqlSelect = sqlBuilder.Query().select();
+                let sql = sqlSelect
+                    .from('patients')
+                    .where(namedSqlParameters)
+                    .build();
+                db.all(sql, (err, rows) => {
+                    if (err) reject(err);
+                    if (rows) rows = rows.slice(0, 50);
+                    resolve(rows);
+                });
+            }
         });
     }
 
     createNamedSqlParameters(queryParams) {
         let namedSqlParameters = {};
-        if (queryParams.pid) namedSqlParameters.id = queryParams.pid;
-        if (queryParams.surname) namedSqlParameters.surname = queryParams.surname;
+
+        if (queryParams.pid) namedSqlParameters.id              = queryParams.pid;
+        if (queryParams.surname) namedSqlParameters.surname     = queryParams.surname;
         if (queryParams.givenName) namedSqlParameters.givenname = queryParams.givenName;
-        if (queryParams.birthday) namedSqlParameters.birthday = queryParams.birthday;
-        if (queryParams.gender) namedSqlParameters.gender = queryParams.gender;
+        if (queryParams.birthday) namedSqlParameters.birthday   = queryParams.birthday;
+        if (queryParams.gender) namedSqlParameters.gender       = queryParams.gender;
         return namedSqlParameters;
     }
 
