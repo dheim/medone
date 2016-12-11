@@ -8,39 +8,29 @@ class DosageSetSpecificTimes extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {
-            disposals: [
-                {}
-            ]
-        }
     }
 
     updateTime(index, time) {
-        let updatedDisposals = this.state.disposals.slice();
+        let updatedDisposals = this.props.disposals.slice();
         updatedDisposals[index].time = time;
-        this.setState({disposals: updatedDisposals});
         this.props.onChange(updatedDisposals);
     }
 
     updateDosage(index, dosage) {
-        let updatedDisposals = this.state.disposals.slice();
+        let updatedDisposals = this.props.disposals.slice();
         updatedDisposals[index].dosage = dosage;
-        this.setState({disposals: updatedDisposals});
         this.props.onChange(updatedDisposals);
-        console.log(updatedDisposals);
     }
 
     addDisposal() {
-        let updatedDisposals = this.state.disposals.slice();
+        let updatedDisposals = this.props.disposals.slice();
         updatedDisposals.push({});
-        this.setState({disposals: updatedDisposals});
         this.props.onChange(updatedDisposals);
     }
 
     removeDisposal(index) {
-        let updatedDisposals = this.state.disposals.slice();
+        let updatedDisposals = this.props.disposals.slice();
         updatedDisposals.splice(index, 1);
-        this.setState({disposals: updatedDisposals});
         this.props.onChange(updatedDisposals);
     }
 
@@ -55,7 +45,7 @@ class DosageSetSpecificTimes extends Component {
                     </TableRow>
                 </TableHeader>
                 <TableBody displayRowCheckbox={false}>
-                    {this.state.disposals.map((dosage, index, allDosages) => {
+                    {this.props.disposals.map((dosage, index, allDosages) => {
                         return <TableRow key={index} selectable={false}>
                             <TableRowColumn>
                                 <TextField type="text" name={'time' + index} floatingLabelText="Time"

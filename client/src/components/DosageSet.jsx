@@ -9,43 +9,10 @@ class DosageSet extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
     }
 
-    updateDosageScheme(event, key, dosageScheme) {
-        this.props.onChange(this.createDosageSet(dosageScheme, this.state.disposalsMorningNoonEveningNight,
-            this.state.disposalsSpecificTimes));
-
-        this.setState({
-            dosageScheme: dosageScheme
-        });
-    }
-
-    updateDisposals(disposals) {
-        if (this.state.dosageScheme === "MorningNoonEveningNight") {
-            this.setState({
-                disposalsMorningNoonEveningNight: disposals
-            });
-
-            this.props.onChange(this.createDosageSet(this.state.dosageScheme, disposals, null));
-
-        }
-
-        if (this.state.dosageScheme === "SpecificTimes") {
-            this.setState({
-                disposalsSpecificTimes: disposals
-            });
-
-            this.props.onChange(this.createDosageSet(this.state.dosageScheme, null, disposals));
-        }
-    }
-
-    createDosageSet(dosageScheme, disposalsMorningNoonEveningNight, disposalsSpecificTimes) {
-        return {
-            dosageScheme,
-            disposalsMorningNoonEveningNight,
-            disposalsSpecificTimes
-        }
+    handleChange(field, value) {
+        this.props.onChange(field, value);
     }
 
     render() {
@@ -53,19 +20,25 @@ class DosageSet extends Component {
             <div className="dosage-set">
 
                 <SelectField
-                    value={this.state.dosageScheme}
+                    value={this.props.dosageScheme}
                     floatingLabelText="Dosage schema"
-                    onChange={this.updateDosageScheme.bind(this)}>
+                    onChange={(event, key, dosageScheme) => this.handleChange('dosageScheme', dosageScheme)}>
                     <MenuItem value="MorningNoonEveningNight" primaryText="Morning, Noon, Evening, Night"/>
                     <MenuItem value="SpecificTimes" primaryText="Specific times"/>
                 </SelectField>
 
-                {this.state.dosageScheme === 'MorningNoonEveningNight' ?
-                    <DosageSetMorningNoonEveningNight unity={this.props.unity} onChange={this.updateDisposals.bind(this)}/> : null
+                {this.props.dosageScheme === 'MorningNoonEveningNight' ?
+                    <DosageSetMorningNoonEveningNight
+                        disposals={this.props.disposalSetMorningNoonEveningNight || {}}
+                        unity={this.props.unity}
+                        onChange={(disposalSet) => this.handleChange('disposalSetMorningNoonEveningNight', disposalSet)}/> : null
                 }
 
-                {this.state.dosageScheme === 'SpecificTimes' ?
-                    <DosageSetSpecificTimes unity={this.props.unity} onChange={this.updateDisposals.bind(this)}/> : null
+                {this.props.dosageScheme === 'SpecificTimes' ?
+                    <DosageSetSpecificTimes
+                        disposals={this.props.disposalSetSpecificTimes || [{}]}
+                        unity={this.props.unity}
+                        onChange={(disposalSet) => this.handleChange('disposalSetSpecificTimes', disposalSet)}/> : null
                 }
             </div>
         );

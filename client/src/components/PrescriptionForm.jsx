@@ -38,8 +38,16 @@ class PrescriptionForm extends Component {
             drugDocId: this.state.drug.docid,
             drugName: this.state.drug.preparation_denomination,
             unity: this.state.drug.unity,
-            dosageSet: this.state.dosageSet
+            dosageSet: {
+                dosageScheme: this.state.dosageScheme
+            }
         };
+
+        if (this.state.dosageScheme === 'MorningNoonEveningNight') {
+            prescriptionData.dosageSet.disposalsMorningNoonEveningNight = this.state.disposalSetMorningNoonEveningNight;
+        } else if (this.state.dosageScheme === 'SpecificTimes') {
+            prescriptionData.dosageSet.disposalsSpecificTimes = this.state.disposalSetSpecificTimes;
+        }
 
         api.post(`patient/${this.state.patientId}/prescriptions/`, JSON.stringify(prescriptionData))
             .then((result) => {
@@ -48,7 +56,10 @@ class PrescriptionForm extends Component {
 
         this.setState({
             drug: null,
-            searchTerm: ''
+            searchTerm: '',
+            dosageScheme: null,
+            disposalSetMorningNoonEveningNight: null,
+            disposalSetSpecificTimes: null
         });
 
         this.props.onChange();
@@ -72,8 +83,11 @@ class PrescriptionForm extends Component {
                     searchTerm={this.state.searchTerm}/>
                 <div>Selected drug: {this.state.drug ? this.state.drug.preparation_denomination : ''}</div>
 
-                <DosageSet unity={this.state.drug ? this.state.drug.unity : ''}
-                           onChange={(dosageSet) => this.handleChange('dosageSet', dosageSet)}/>
+                <DosageSet dosageScheme={this.state.dosageScheme}
+                           disposalSetMorningNoonEveningNight={this.state.disposalSetMorningNoonEveningNight}
+                           disposalSetSpecificTimes={this.state.disposalSetSpecificTimes}
+                           unity={this.state.drug ? this.state.drug.unity : ''}
+                           onChange={(field, value) => this.handleChange(field, value)}/>
 
                 <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
                 <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/"/>}/>
