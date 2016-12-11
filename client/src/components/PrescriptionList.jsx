@@ -1,16 +1,20 @@
 import React, {Component} from 'react';
 import PrescriptionForm from './PrescriptionForm';
 import {api} from 'services/api';
-
+import {token} from 'services/token';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import Dialog from 'material-ui/Dialog';
+import Snackbar from 'material-ui/Snackbar';
 
 class PrescriptionList extends Component {
 
     constructor(props) {
         super(props);
-        this.state = {};
+        this.state = {
+            snack: false
+        };
     }
 
     componentDidMount() {
@@ -42,7 +46,6 @@ class PrescriptionList extends Component {
             return '';
         }
 
-
         switch (dosageSet.dosageScheme) {
             case 'MorningNoonEveningNight':
                 let disposals = dosageSet.disposalsMorningNoonEveningNight;
@@ -58,30 +61,41 @@ class PrescriptionList extends Component {
         }
     }
 
+    showSnack() {
+        const timeout = 2500;
+        this.setState({snack: true});
+
+        window.setTimeout( () => {
+            this.setState({snack: false});
+        }, timeout);
+    }
+
     render() {
+        const actions = [
+            <RaisedButton label="cancel" secondary={true} onClick={this.togglePrescriptionForm} />
+        ];
+
+        const _token = token.get();
+
         if (!this.state.prescriptions) {
             return (<CircularProgress size={80} thickness={5}/>);
         } else {
             return (
                 <div>
 
-                    <RaisedButton
-                        onClick={this.togglePrescriptionForm}
-                        label="Add prescription"
-                        backgroundColor="#a4c639"/>
+                    {(_token.role !== 'NURSE') ? (<div>
+                        <RaisedButton onClick={this.togglePrescriptionForm} label="Add prescription" backgroundColor="#a4c639"/>
+                        <Dialog title="Add prescription"
+                            onRequestClose={this.togglePrescriptionForm}
+                            actions={actions}
+                            open={this.state.showPrescriptionForm}>
+                            <PrescriptionForm patientId={this.state.patientId}
+                                            actions={{close: this.togglePrescriptionForm, save: this.showSnack.bind(this)}}
+                                            onChange={() => this.loadPrescriptions(this.state.patientId)}/>
+                        </Dialog>
+                    </div>) : null}
 
-                    {(() => {
-                        if (this.state.showPrescriptionForm) {
-                            return (
-                                <div key="prescriptionForm">
-                                    <PrescriptionForm patientId={this.state.patientId}
-                                                      onChange={() => this.loadPrescriptions(this.state.patientId)}></PrescriptionForm>
-                                </div>
-                            )
-                        }
-                    })()}
-
-                    <Table>
+                    {(this.state.prescriptions.length === 0) ? (<div>No described prescriptions</div>) : (<Table>
                         <TableHeader displaySelectAll={false}>
                             <TableRow>
                                 <TableHeaderColumn>Drug</TableHeaderColumn>
@@ -100,7 +114,11 @@ class PrescriptionList extends Component {
                                 </TableRow>
                             })};
                         </TableBody>
-                    </Table>
+                    </Table>)}
+
+                    <Snackbar
+                        open={this.state.snack}
+                        message="Prescription added!"/>
 
                 </div>
             )

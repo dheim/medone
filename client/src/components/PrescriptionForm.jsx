@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import {Link} from 'react-router';
 
 import {api} from 'services/api';
+import {token} from 'services/token';
 
 import DrugAutoComplete from './DrugAutoComplete';
 import DosageSet from './DosageSet';
@@ -51,7 +52,8 @@ class PrescriptionForm extends Component {
 
         api.post(`patient/${this.state.patientId}/prescriptions/`, JSON.stringify(prescriptionData))
             .then((result) => {
-                console.log('prescription successfully saved');
+                this.props.actions.close();
+                this.props.actions.save();
             });
 
         this.setState({
@@ -89,8 +91,7 @@ class PrescriptionForm extends Component {
                            unity={this.state.drug ? this.state.drug.unity : ''}
                            onChange={(field, value) => this.handleChange(field, value)}/>
 
-                <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
-                <RaisedButton label="cancel" secondary={true} containerElement={<Link to="/"/>}/>
+               <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
             </form>
         </div>);
     }
