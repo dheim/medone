@@ -37,12 +37,18 @@ class AppAccountState extends Component {
 }
 
 class AppComponent extends Component {
+
+    handleClick() {
+        hashHistory.push('/');
+    }
+
     render() {
         return (
             <MuiThemeProvider>
                 <div>
                     <AppBar title="medONE"
                             showMenuIconButton={true}
+                            onTitleTouchTap={this.handleClick}
                             iconClassNameLeft="fa fa-medkit"
                             iconElementRight={<AppAccountState/>}
                             />

@@ -79,11 +79,7 @@ class PrescriptionForm extends Component {
             <form onSubmit={(event) => this.handleSubmit(event)}
                   onKeyPress={(event) => this.preventEnterFromSubmitting(event)}>
 
-                <DrugAutoComplete
-                    onChange={(field, value) => this.handleChange(field, value)}
-                    drug={this.state.drug}
-                    searchTerm={this.state.searchTerm}/>
-                <div>Selected drug: {this.state.drug ? this.state.drug.preparation_denomination : ''}</div>
+                <DrugAutoComplete onChange={this.handleChange.bind(this)}/>
 
                 <DosageSet dosageScheme={this.state.dosageScheme}
                            disposalSetMorningNoonEveningNight={this.state.disposalSetMorningNoonEveningNight}

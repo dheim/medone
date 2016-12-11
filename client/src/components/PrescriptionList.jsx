@@ -86,6 +86,7 @@ class PrescriptionList extends Component {
                     {(_token.role !== 'NURSE') ? (<div>
                         <RaisedButton onClick={this.togglePrescriptionForm} label="Add prescription" backgroundColor="#a4c639"/>
                         <Dialog title="Add prescription"
+                            autoScrollBodyContent={true}
                             onRequestClose={this.togglePrescriptionForm}
                             actions={actions}
                             open={this.state.showPrescriptionForm}>

@@ -10,6 +10,7 @@ class API {
 
 	handleError(res) {
 		if (res.status === 403) {
+			token.remove();
 			hashHistory.push('/');
 		}
 		return res;
