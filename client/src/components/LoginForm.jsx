@@ -46,15 +46,19 @@ class LoginForm extends Component {
 
     render() {
         return (
-            <div>
+            <div id="login">
                 <h1>Login</h1>
-                <form onSubmit={(event) => this.login(event)}>
-                    <TextField type="text" name="username" floatingLabelText="username"
-                               onChange={(event) => this.updateUsername(event)}/>
-                    <TextField type="password" name="password" floatingLabelText="password"
-                               onChange={(event) => this.updatePassword(event)}/>
-                    <RaisedButton label="submit" primary={true} type="submit"/>
-                    {this.state.loginFailed ? <div>Wrong username or password</div> : null}
+                <form id="login__form" onSubmit={(event) => this.login(event)} autoComplete="off">
+                    <div>
+                        <TextField type="text" name="username" className="login__input" floatingLabelText="Username" autoFocus={true} onChange={(event) => this.updateUsername(event)}/>
+                    </div>
+                    <div>
+                        <TextField type="password" name="password" className="login__input"floatingLabelText="Password"onChange={(event) => this.updatePassword(event)}/>
+                    </div>
+                    <div>
+                        <RaisedButton label="Login" primary={true} type="submit"/>
+                        {this.state.loginFailed ? <div className="login__error">Wrong username or password</div> : null}
+                    </div>
                 </form>
             </div>
         )
