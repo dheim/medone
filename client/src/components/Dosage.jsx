@@ -7,7 +7,7 @@ class Dosage extends Component {
     render() {
         return (
             <div>
-                <TextField type="number" name={this.props.name} floatingLabelText={this.props.label}
+                <TextField type="number" name={this.props.name} min="0" max="1000" floatingLabelText={this.props.label}
                            onChange={(event, value) => this.props.onChange(event, value)}/>
                 <span>{this.props.unity}</span>
             </div>

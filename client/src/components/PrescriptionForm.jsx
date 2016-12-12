@@ -6,7 +6,7 @@ import {token} from 'services/token';
 
 import DrugAutoComplete from './DrugAutoComplete';
 import DosageSet from './DosageSet';
-
+import Snackbar from 'material-ui/Snackbar';
 import RaisedButton from 'material-ui/RaisedButton';
 
 class PrescriptionForm extends Component {
@@ -15,7 +15,8 @@ class PrescriptionForm extends Component {
         super(props);
         this.state = {
             patientId: this.props.patientId,
-            searchTerm: ''
+            error: false,
+            errorMessage: ''
         };
     }
 
@@ -26,9 +27,44 @@ class PrescriptionForm extends Component {
     handleSubmit(event) {
         event.preventDefault();
 
-        if (!this.state.drug) {
-            // TODO Form validation
+        if (!this.state.patientId) {
+            this.setState({error: true, errorMessage: 'PatientId is missing'});
             return;
+        }
+
+        if (!this.state.drug) {
+            this.setState({error: true, errorMessage: 'Please select a drug'});
+            return;
+        } else if (!this.state.dosageScheme) {
+            this.setState({error: true, errorMessage: 'Please set a dosage schema'});
+            return 
+        } else if (this.state.dosageScheme === 'MorningNoonEveningNight') {
+            let error = false;
+            if (!this.state.disposalSetMorningNoonEveningNight) {
+                error = true;
+            }
+
+            if (error) {
+                this.setState({error: true, errorMessage: 'Please set a dosage'});
+                return;
+            }
+
+        } else if (this.state.dosageScheme === 'SpecificTimes') {
+            let error = false;
+            if (!this.state.disposalSetSpecificTimes) {
+                error = true;
+            } else {
+                this.state.disposalSetSpecificTimes.forEach( function (item) {
+                    if (!item.time || !item.dosage) {
+                        error = true;
+                    }
+                });
+            }
+
+            if (error) {
+                this.setState({error: true, errorMessage: 'Please set all times and dosages'});
+                return;
+            }
         }
 
         this.save();
@@ -58,7 +94,6 @@ class PrescriptionForm extends Component {
 
         this.setState({
             drug: null,
-            searchTerm: '',
             dosageScheme: null,
             disposalSetMorningNoonEveningNight: null,
             disposalSetSpecificTimes: null
@@ -73,9 +108,12 @@ class PrescriptionForm extends Component {
         }
     }
 
+    resetError() {
+        this.setState({error: false, errorMessage: ''});
+    }
+
     render() {
         return (<div className="prescription-form">
-            <h1>Prescription</h1>
             <form onSubmit={(event) => this.handleSubmit(event)}
                   onKeyPress={(event) => this.preventEnterFromSubmitting(event)}>
 
@@ -89,6 +127,7 @@ class PrescriptionForm extends Component {
 
                <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
             </form>
+            <Snackbar open={this.state.error} message={this.state.errorMessage} autoHideDuration={2500} onRequestClose={this.resetError.bind(this)} />
         </div>);
     }
 }

@@ -21,7 +21,7 @@ class DosageSet extends Component {
 
                 <SelectField
                     value={this.props.dosageScheme}
-                    floatingLabelText="Dosage schema"
+                    floatingLabelText="Dosage schema *"
                     onChange={(event, key, dosageScheme) => this.handleChange('dosageScheme', dosageScheme)}>
                     <MenuItem value="MorningNoonEveningNight" primaryText="Morning, Noon, Evening, Night"/>
                     <MenuItem value="SpecificTimes" primaryText="Specific times"/>

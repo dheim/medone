@@ -3,6 +3,7 @@ import Dosage from './Dosage'
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import TextField from 'material-ui/TextField';
 import IconButton from 'material-ui/IconButton';
+import TimePicker from 'material-ui/TimePicker';
 
 class DosageSetSpecificTimes extends Component {
 
@@ -12,7 +13,7 @@ class DosageSetSpecificTimes extends Component {
 
     updateTime(index, time) {
         let updatedDisposals = this.props.disposals.slice();
-        updatedDisposals[index].time = time;
+        updatedDisposals[index].time = time.getHours() + ':' + time.getMinutes();
         this.props.onChange(updatedDisposals);
     }
 
@@ -48,8 +49,7 @@ class DosageSetSpecificTimes extends Component {
                     {this.props.disposals.map((dosage, index, allDosages) => {
                         return <TableRow key={index} selectable={false}>
                             <TableRowColumn>
-                                <TextField type="text" name={'time' + index} floatingLabelText="Time"
-                                           onChange={(event, value) => this.updateTime(index, value)}/>
+                                <TimePicker format="24hr" name={'time' + index} hintText="Time" onChange={(event, value) => this.updateTime(index, value)}/>
                             </TableRowColumn>
                             <TableRowColumn>
                                 <Dosage name={'dosage' + index} label='Dosage' unity={this.props.unity}
