@@ -51,21 +51,26 @@ class PatientSearchForm extends Component {
     render() {
 
         const extendedSearch = (<div className="patient-search__form--extended">
-            <TextField type="text" name="pid" floatingLabelText="patient id" onChange={(event) => this.handleChange(event)}/>
-            <TextField type="text" name="surname" floatingLabelText="surname" onChange={(event) => this.handleChange(event)}/>
-            <TextField type="text" name="givenName" floatingLabelText="given name" onChange={(event) => this.handleChange(event)}/>
-            <TextField type="text" name="birthday" floatingLabelText="birthday" onChange={(event) => this.handleChange(event)}/>
+            <TextField type="text" fullWidth={true} name="pid" floatingLabelText="patient id" onChange={(event) => this.handleChange(event)}/>
+            <TextField type="text" fullWidth={true} name="surname" floatingLabelText="surname" onChange={(event) => this.handleChange(event)}/>
+            <TextField type="text" fullWidth={true} name="givenName" floatingLabelText="given name" onChange={(event) => this.handleChange(event)}/>
+            <TextField type="text" fullWidth={true} name="birthday" floatingLabelText="birthday" onChange={(event) => this.handleChange(event)}/>
             <SelectField name="gender" floatingLabelText="gender" value={this.state.gender} onChange={(event, key, value) => this.handleGenderChange(value)}>
                 <MenuItem value={''} primaryText="any"/>
                 <MenuItem value={'m'} primaryText="male"/>
                 <MenuItem value={'f'} primaryText="female"/>
             </SelectField>
-            <RaisedButton label="search" primary={true} type="submit" />
-            <IconButton onClick={this.toggleExtendedSearch.bind(this)} tooltip="Expand" iconClassName="fa fa-caret-square-o-up"/>
+            <br/>
+            <div className="patient-search__form--extended actions">
+                <RaisedButton label="search" primary={true} type="submit" />
+                <IconButton onClick={this.toggleExtendedSearch.bind(this)} tooltip="Expand" iconClassName="fa fa-caret-square-o-up"/>
+            </div>
         </div>);
 
         const simpleSearch = (<div className="patient_search__form--simple">
-            <TextField type="text" name="search" onChange={(event) => this.handleChange(event)} autoFocus={true} floatingLabelText="id, name" />
+            <div className="patient_search__form--simple movedInput">
+                <TextField type="text" name="search" onChange={(event) => this.handleChange(event)} autoFocus={true} floatingLabelText="id, name" />
+            </div>
             <RaisedButton label="search" primary={true} type="submit" />
             <IconButton onClick={this.toggleExtendedSearch.bind(this)} tooltip="Expand" iconClassName="fa fa-caret-square-o-down"/>
         </div>);

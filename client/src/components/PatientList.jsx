@@ -51,6 +51,14 @@ class PatientList extends Component {
             </TableBody>
         </Table>);
 
+        if (this.props.data && this.props.data.state === 'initial') {
+            return <div>please use the provided search-field.</div>;
+        } else if (this.props.patients.length === 0) {
+            return list;
+        } else {
+            return <div>no results</div>;
+        }
+
         return (this.props.patients.length) ? list : <div>no results</div>;
     }
 }
