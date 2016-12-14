@@ -1,9 +1,11 @@
 import React, {Component} from 'react';
+import {hashHistory} from 'react-router';
 import PatientSearchForm from './PatientSearchForm';
 import PatientList from './PatientList';
 import Divider from 'material-ui/Divider';
 import CircularProgress from 'material-ui/CircularProgress';
 import {api} from 'services/api';
+import {token} from 'services/token';
 
 import TextField from 'material-ui/TextField';
 
@@ -12,6 +14,10 @@ class PatientSearchPage extends Component {
         super(props);
         this.state = {
             patients: null
+        }
+
+        if (!token.isValid()) {
+            hashHistory.push('/login');
         }
     }
 

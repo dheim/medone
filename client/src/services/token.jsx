@@ -19,6 +19,11 @@ class Token {
 		}
 	}
 
+	isValid() {
+		const token = this.get();
+		return (token.role);
+	}
+
 	set(token) {
 		localStorage.setItem(this.key, token);
 		return this;

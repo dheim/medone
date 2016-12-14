@@ -2,7 +2,7 @@ import 'babel-polyfill';
 
 import React, {Component} from 'react';
 import {render} from 'react-dom';
-import {Router, Route, hashHistory} from 'react-router';
+import {Router, Route, Link, hashHistory} from 'react-router';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
 
 import injectTapEventPlugin from 'react-tap-event-plugin';
@@ -24,7 +24,7 @@ class AppAccountState extends Component {
 
     logout() {
         localStorage.removeItem('token');
-        hashHistory.push('/');
+        hashHistory.push('/login');
     }
 
     render() {
@@ -33,7 +33,7 @@ class AppAccountState extends Component {
         if (_token) {
             return (<FlatButton onClick={this.logout.bind(this)} label={(<span>{_token.username} <i className="fa fa-sign-out"/></span>)}/>);
         } else {
-            return (<FlatButton href="/" label="Login" />);
+            return (<FlatButton containerElement={<Link to="/login"/>} label="Login" />);
         }
     }
 }
@@ -60,20 +60,14 @@ class AppComponent extends Component {
     }
 }
 
-class LandingPage extends Component {
-    render() {
-        return (<div>
-            {token.get() ? <PatientSearchPage/> : <LoginForm/>}
-        </div>);
-    }
-}
-
 render(
     <Router history={hashHistory}>
         <Route component={AppComponent}>
+            <Route path="/login" component={LoginForm}/>
+            <Route path="/search" component={PatientSearchPage}/>
             <Route path="/patient/:id" component={PatientForm}/>
             <Route path="/prescriptions" component={PrescriptionList}/>
-            <Route path="*" component={LandingPage}/>
+            <Route path="*" component={PatientSearchPage}/>
         </Route>
     </Router>,
     document.getElementById('root'));

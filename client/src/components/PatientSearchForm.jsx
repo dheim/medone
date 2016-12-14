@@ -51,7 +51,7 @@ class PatientSearchForm extends Component {
     render() {
 
         const extendedSearch = (<div className="patient-search__form--extended">
-            <TextField type="text" fullWidth={true} name="pid" floatingLabelText="patient id" onChange={(event) => this.handleChange(event)}/>
+            <TextField type="number" fullWidth={true} name="pid" floatingLabelText="patient id" onChange={(event) => this.handleChange(event)}/>
             <TextField type="text" fullWidth={true} name="surname" floatingLabelText="surname" onChange={(event) => this.handleChange(event)}/>
             <TextField type="text" fullWidth={true} name="givenName" floatingLabelText="given name" onChange={(event) => this.handleChange(event)}/>
             <TextField type="text" fullWidth={true} name="birthday" floatingLabelText="birthday" onChange={(event) => this.handleChange(event)}/>

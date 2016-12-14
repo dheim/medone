@@ -14,9 +14,7 @@ class Patient {
                     resolve(row);
                     return;
                 });
-            }
-
-            if (queryParams.search) {
+            } else if (queryParams.search) {
                 const query = `SELECT * FROM patients WHERE id = ?
                 OR (
                     givenname || ' '|| surname LIKE ?

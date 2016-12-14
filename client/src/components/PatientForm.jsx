@@ -29,13 +29,27 @@ class PatientForm extends Component {
 
 	save(event) {
 		event.preventDefault();
-		let form = event.target;
-		let formData = new FormData(form);
 
-		api.put(form.getAttribute('data-action'), formData).then( (result) => {
+		const form 		= event.target;
+		let formData 	= this.state.patient;
+
+		api.put(form.getAttribute('data-action'), JSON.stringify(this.state.patient)).then( (result) => {
 			this.setState({saved: true});
-			//this.props.history.push('/');
-		});
+		})
+	}
+
+	handleChange(event, value) {
+		let field;
+		if (event === null) {
+			field = 'birthday';
+		} else {
+			field = event.target.name;
+		}
+
+		let patient = this.state.patient;
+		patient[field] = value;
+
+		this.setState({patient});
 	}
 
 	render() {
@@ -43,28 +57,31 @@ class PatientForm extends Component {
 			return (<div>
 				<form id="patient-form" onSubmit={this.save.bind(this)} data-action={`patient/${this.state.patient.id}`}>
 
-					<TextField type="number" name="id" floatingLabelText="id" defaultValue={this.state.patient.id} />
-					<TextField type="text" name="givenname" floatingLabelText="givenname" defaultValue={this.state.patient.givenname} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="number" fullWidth={true} name="id" floatingLabelText="id" defaultValue={this.state.patient.id} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" fullWidth={true} autoFocus={true} name="givenname" floatingLabelText="givenname" defaultValue={this.state.patient.givenname} />
 
-					<TextField type="text" name="surname" floatingLabelText="surname" defaultValue={this.state.patient.surname} />
-					<DatePicker name="birthday" floatingLabelText="birthday" defaultDate={this.state.birthday} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" fullWidth={true} name="surname" floatingLabelText="surname" defaultValue={this.state.patient.surname} />
+					<DatePicker onChange={(event, value) => this.handleChange(event, value)} name="birthday" floatingLabelText="birthday" defaultDate={this.state.patient.birthday} />
 
-					<TextField type="text" name="streetaddress" floatingLabelText="address" defaultValue={this.state.patient.streetaddress} />
-					<TextField type="text" name="zipcode" floatingLabelText="zipcode" defaultValue={this.state.patient.zipcode} />
-					<TextField type="text" name="city" floatingLabelText="city" defaultValue={this.state.patient.city} />
-					<TextField type="text" name="country" floatingLabelText="country" defaultValue={this.state.patient.country} />
-					<TextField type="text" name="telephonenumber" floatingLabelText="phone" defaultValue={this.state.patient.telephonenumber} />
-					<TextField type="text" name="emailaddress" floatingLabelText="email" defaultValue={this.state.patient.emailaddress} />
-					<TextField type="text" name="bloodtype" floatingLabelText="blood type" defaultValue={this.state.patient.bloodtype} />
-					<TextField type="text" name="occupation" floatingLabelText="occupation" defaultValue={this.state.patient.occupation} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" fullWidth={true} name="streetaddress" floatingLabelText="address" defaultValue={this.state.patient.streetaddress} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" name="zipcode" floatingLabelText="zipcode" defaultValue={this.state.patient.zipcode} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" fullWidth={true} name="city" floatingLabelText="city" defaultValue={this.state.patient.city} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" fullWidth={true} name="country" floatingLabelText="country" defaultValue={this.state.patient.country} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" name="telephonenumber" floatingLabelText="phone" defaultValue={this.state.patient.telephonenumber} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" fullWidth={true} name="emailaddress" floatingLabelText="email" defaultValue={this.state.patient.emailaddress} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" name="bloodtype" floatingLabelText="blood type" defaultValue={this.state.patient.bloodtype} />
+					<TextField onChange={(event, value) => this.handleChange(event, value)} type="text" fullWidth={true} name="occupation" floatingLabelText="occupation" defaultValue={this.state.patient.occupation} />
 
-					<RadioButtonGroup name="gender" defaultSelected={this.state.patient.gender}>
+					<RadioButtonGroup onChange={(event, value) => this.handleChange(event, value)} name="gender" defaultSelected={this.state.patient.gender}>
 						<RadioButton value="m" label="male" />
 						<RadioButton value="f" label="female" />
 					</RadioButtonGroup>
 
-					<RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save" />} />
-					<RaisedButton label="back" secondary={true} href="/" containerElement={<Link to="/" />} />
+					<br/>
+					<div>
+						<RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save" />} />
+						<RaisedButton label="back" secondary={true} containerElement={<Link to="/" />} />
+					</div>
 				</form>
 
 				<Snackbar
