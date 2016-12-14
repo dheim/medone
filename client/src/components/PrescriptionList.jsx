@@ -7,6 +7,7 @@ import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
 import Dialog from 'material-ui/Dialog';
 import Snackbar from 'material-ui/Snackbar';
+import moment from 'moment';
 
 class PrescriptionList extends Component {
 
@@ -53,7 +54,13 @@ class PrescriptionList extends Component {
             case 'SpecificTimes':
                 return <ul>
                     {dosageSet.disposalsSpecificTimes.map((disposal, index) => {
-                        return <li key={index}>{disposal.time}: {disposal.dosage}</li>
+
+                        let time = disposal.time;;
+                        if (disposal.time.length > 5) {
+                            time = moment(time).format('HH:mm');
+                        }
+
+                        return <li key={index}>{time}: {disposal.dosage}</li>
                     })}
                 </ul>;
             default:
