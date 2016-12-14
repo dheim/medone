@@ -21,6 +21,10 @@ class PatientSearchPage extends Component {
         }
     }
 
+    store(data) {
+        localStorage.setItem('tmpPatients', JSON.stringify(data));
+    }
+
     search(criteria) {
         this.setState({
             loading: true
@@ -32,8 +36,10 @@ class PatientSearchPage extends Component {
             if (patients.length > 0) {
                 actions.patients = patients.slice(0, 100);
             }
+            this.store(actions.patients);
             this.setState(actions);
         }).catch( (error) => {
+            localStorage.removeItem('tmpPatients');
             console.error(error);
         });
     }
@@ -48,12 +54,18 @@ class PatientSearchPage extends Component {
     }
 
     render() {
+        let patients = this.state.patients;
+        let _patients = localStorage.getItem('tmpPatients');
+        if (_patients) {
+            patients = JSON.parse(_patients);
+        }
+
         return (
             <div id="patient-search">
                 <PatientSearchForm search={(criteria) => this.search(criteria)} />
                 {this.state.loading ? <div className="patient-search__loading"><CircularProgress size={80} thickness={5}/></div> : null}
 
-                {!this.state.loading ? <PatientList patients={this.state.patients}/> : null}
+                {!this.state.loading ? <PatientList patients={patients}/> : null}
             </div>
         )
     }

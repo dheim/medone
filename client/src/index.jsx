@@ -29,11 +29,12 @@ class AppAccountState extends Component {
 
     render() {
         const _token = token.get();
+        const style = {color: 'white', marginTop: '6px', fontWeight: 'bold'};
         
         if (_token) {
-            return (<FlatButton onClick={this.logout.bind(this)} label={(<span>{_token.username} <i className="fa fa-sign-out"/></span>)}/>);
+            return (<FlatButton style={style} onClick={this.logout.bind(this)} label={(<span>{_token.username} <i className="fa fa-sign-out"/></span>)}/>);
         } else {
-            return (<FlatButton containerElement={<Link to="/login"/>} label="Login" />);
+            return (<FlatButton style={style} containerElement={<Link to="/login"/>} label="Login" />);
         }
     }
 }
