@@ -52,7 +52,7 @@ class PrescriptionList extends Component {
                 let disposals = dosageSet.disposalsMorningNoonEveningNight;
                 return `${disposals.morning || 0}, ${disposals.noon || 0}, ${disposals.evening || 0}, ${disposals.night || 0}`
             case 'SpecificTimes':
-                return <ul>
+                return <ul className="prescriptions-specific-times">
                     {dosageSet.disposalsSpecificTimes.map((disposal, index) => {
                         let time = this.getFormattedTime(disposal.time);
                         return <li key={index}>{time}: {disposal.dosage}</li>
