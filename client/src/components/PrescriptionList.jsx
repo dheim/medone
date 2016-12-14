@@ -30,7 +30,7 @@ class PrescriptionList extends Component {
 
     async loadPrescriptions(patientId) {
         const prescriptionsResponse = await
-        api.get(`patient/${patientId}/prescriptions`);
+            api.get(`patient/${patientId}/prescriptions`);
         this.setState({
             prescriptions: prescriptionsResponse.data,
         });
@@ -54,12 +54,7 @@ class PrescriptionList extends Component {
             case 'SpecificTimes':
                 return <ul>
                     {dosageSet.disposalsSpecificTimes.map((disposal, index) => {
-
-                        let time = disposal.time;;
-                        if (disposal.time.length > 5) {
-                            time = moment(time).format('HH:mm');
-                        }
-
+                        let time = this.getFormattedTime(disposal.time);
                         return <li key={index}>{time}: {disposal.dosage}</li>
                     })}
                 </ul>;
@@ -68,18 +63,26 @@ class PrescriptionList extends Component {
         }
     }
 
+    getFormattedTime(timeString) {
+        if (moment(timeString, 'H:m').isValid()) {
+            return moment(timeString, 'H:m').format('HH:mm');
+        } else {
+            return timeString;
+        }
+    }
+
     showSnack() {
         const timeout = 2500;
         this.setState({snack: true});
 
-        window.setTimeout( () => {
+        window.setTimeout(() => {
             this.setState({snack: false});
         }, timeout);
     }
 
     render() {
         const actions = [
-            <RaisedButton label="cancel" secondary={true} onClick={this.togglePrescriptionForm} />
+            <RaisedButton label="cancel" secondary={true} onClick={this.togglePrescriptionForm}/>
         ];
 
         const _token = token.get();
@@ -91,15 +94,19 @@ class PrescriptionList extends Component {
                 <div>
 
                     {(_token.role !== 'NURSE') ? (<div>
-                        <RaisedButton onClick={this.togglePrescriptionForm} label="Add prescription" backgroundColor="#a4c639"/>
+                        <RaisedButton onClick={this.togglePrescriptionForm} label="Add prescription"
+                                      backgroundColor="#a4c639"/>
                         <Dialog title="Add prescription"
-                            autoScrollBodyContent={true}
-                            onRequestClose={this.togglePrescriptionForm}
-                            actions={actions}
-                            open={this.state.showPrescriptionForm}>
+                                autoScrollBodyContent={true}
+                                onRequestClose={this.togglePrescriptionForm}
+                                actions={actions}
+                                open={this.state.showPrescriptionForm}>
                             <PrescriptionForm patientId={this.state.patientId}
-                                            actions={{close: this.togglePrescriptionForm, save: this.showSnack.bind(this)}}
-                                            onChange={() => this.loadPrescriptions(this.state.patientId)}/>
+                                              actions={{
+                                                  close: this.togglePrescriptionForm,
+                                                  save: this.showSnack.bind(this)
+                                              }}
+                                              onChange={() => this.loadPrescriptions(this.state.patientId)}/>
                         </Dialog>
                     </div>) : null}
 
