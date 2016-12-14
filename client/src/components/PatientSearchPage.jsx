@@ -7,13 +7,11 @@ import {api} from 'services/api';
 
 import TextField from 'material-ui/TextField';
 
-import 'babel-polyfill';
-
 class PatientSearchPage extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            patients: []
+            patients: null
         }
     }
 
@@ -49,7 +47,7 @@ class PatientSearchPage extends Component {
                 <PatientSearchForm search={(criteria) => this.search(criteria)} />
                 {this.state.loading ? <div className="patient-search__loading"><CircularProgress size={80} thickness={5}/></div> : null}
 
-                {!this.state.loading ? <PatientList state="initial" patients={this.state.patients}/> : null}
+                {!this.state.loading ? <PatientList patients={this.state.patients}/> : null}
             </div>
         )
     }
