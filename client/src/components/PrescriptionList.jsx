@@ -71,6 +71,17 @@ class PrescriptionList extends Component {
         }
     }
 
+    getDosageSchemeLabel(dosageScheme) {
+        switch (dosageScheme) {
+            case 'MorningNoonEveningNight' :
+                return "morning, noon, evening, night";
+            case 'SpecificTimes' :
+                return "specific times";
+            default :
+                return 'unknown';
+        }
+    }
+
     showSnack() {
         const timeout = 2500;
         this.setState({snack: true});
@@ -110,7 +121,7 @@ class PrescriptionList extends Component {
                         </Dialog>
                     </div>) : null}
 
-                    {(this.state.prescriptions.length === 0) ? (<div>No described prescriptions</div>) : (<Table>
+                    {(this.state.prescriptions.length === 0) ? (<div>No prescriptions available</div>) : (<Table>
                         <TableHeader displaySelectAll={false}>
                             <TableRow>
                                 <TableHeaderColumn>Drug</TableHeaderColumn>
@@ -123,7 +134,7 @@ class PrescriptionList extends Component {
                             {this.state.prescriptions.map((prescription) => {
                                 return <TableRow key={prescription._id}>
                                     <TableRowColumn>{prescription.drugName}</TableRowColumn>
-                                    <TableRowColumn>{prescription.dosageSet ? prescription.dosageSet.dosageScheme : ''}</TableRowColumn>
+                                    <TableRowColumn>{prescription.dosageSet ? this.getDosageSchemeLabel(prescription.dosageSet.dosageScheme) : ''}</TableRowColumn>
                                     <TableRowColumn>{this.createDisposalOverview(prescription.dosageSet)}</TableRowColumn>
                                     <TableRowColumn>{prescription.unity}</TableRowColumn>
                                 </TableRow>
