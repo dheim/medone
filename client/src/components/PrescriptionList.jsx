@@ -5,6 +5,7 @@ import {token} from 'services/token';
 import CircularProgress from 'material-ui/CircularProgress';
 import RaisedButton from 'material-ui/RaisedButton';
 import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColumn} from 'material-ui/Table';
+import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Dialog from 'material-ui/Dialog';
 import Snackbar from 'material-ui/Snackbar';
 import moment from 'moment';
@@ -93,6 +94,7 @@ class PrescriptionList extends Component {
 
     render() {
         const actions = [
+            <RaisedButton label="save" id="form-submit" primary={true} icon={<i className="fa fa-save"/>}/>,
             <RaisedButton label="cancel" secondary={true} onClick={this.togglePrescriptionForm}/>
         ];
 
@@ -105,8 +107,11 @@ class PrescriptionList extends Component {
                 <div>
 
                     {(_token.role !== 'NURSE') ? (<div>
-                        <RaisedButton onClick={this.togglePrescriptionForm} label="Add prescription"
-                                      backgroundColor="#a4c639"/>
+
+                        <FloatingActionButton onClick={this.togglePrescriptionForm} style={{position: 'absolute', right: '41px', bottom: '67px'}}>
+                            <i className="fa fa-plus"/>
+                        </FloatingActionButton>
+
                         <Dialog title="Add prescription"
                                 autoScrollBodyContent={true}
                                 onRequestClose={this.togglePrescriptionForm}

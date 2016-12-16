@@ -12,15 +12,20 @@ import LoginForm from 'components/LoginForm';
 import PatientForm from 'components/PatientForm';
 import PrescriptionList from 'components/PrescriptionList';
 import PatientSearchPage from './components/PatientSearchPage';
+import UserList from './components/user/UserList';
 
 import AppBar from 'material-ui/AppBar';
-import FlatButton from 'material-ui/FlatButton';
 import {token} from 'services/token';
+
+import IconMenu from 'material-ui/IconMenu';
+import IconButton from 'material-ui/IconButton';
+import MenuItem from 'material-ui/MenuItem';
+import Avatar from 'material-ui/Avatar';
 
 import 'font-awesome-webpack';
 import 'less/imports';
 
-class AppAccountState extends Component {
+class AppBarMenu extends Component {
 
     logout() {
         localStorage.removeItem('token');
@@ -28,14 +33,31 @@ class AppAccountState extends Component {
     }
 
     render() {
+
         const _token = token.get();
         const style = {color: 'white', marginTop: '6px', fontWeight: 'bold'};
-        
-        if (_token) {
-            return (<FlatButton style={style} onClick={this.logout.bind(this)} label={(<span>{_token.username} <i className="fa fa-sign-out"/></span>)}/>);
-        } else {
-            return (<FlatButton style={style} containerElement={<Link to="/login"/>} label="Login" />);
-        }
+        const icon = {lineHeight: '24px'};
+
+        const loggedUser = (<span style={{position: 'relative', top: '-3px'}}>
+                    <Avatar
+                        color="grey"
+                        backgroundColor="grey"
+                        size={30}
+                        style={style}>
+                        {(_token) ? _token.username[0].toUpperCase() : null}
+                    </Avatar>
+                    <span style={{marginLeft: '-10px'}}>
+                        {(_token) ? _token.username.substr(1) : null}
+                    </span>
+                </span>);
+    
+        return (<div style={{color: 'white'}}>
+            {(_token) ? loggedUser : null}
+            <IconMenu iconButtonElement={<IconButton iconClassName="fa fa-bars"></IconButton>} targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+                <MenuItem primaryText="Users" containerElement={<Link to="/users"/>} rightIcon={<i style={icon} className="fa fa-users"/>} />
+                <MenuItem onClick={this.logout.bind(this)} primaryText="Sign out" rightIcon={<i style={icon} className="fa fa-sign-out"/>}/>
+            </IconMenu>
+        </div>);
     }
 }
 
@@ -53,7 +75,7 @@ class AppComponent extends Component {
                             showMenuIconButton={true}
                             onTitleTouchTap={this.handleClick}
                             iconClassNameLeft="fa fa-medkit"
-                            iconElementRight={<AppAccountState/>}
+                            iconElementRight={<AppBarMenu/>}
                             />
                     <div id="main-view">{this.props.children}</div>
                 </div>
@@ -68,6 +90,7 @@ render(
             <Route path="/search" component={PatientSearchPage}/>
             <Route path="/patient/:id" component={PatientForm}/>
             <Route path="/prescriptions" component={PrescriptionList}/>
+            <Route path="/users" component={UserList}/>
             <Route path="*" component={PatientSearchPage}/>
         </Route>
     </Router>,

@@ -18,9 +18,10 @@ let medoneRouter = () => {
     patientRouter.use(checkTokenMiddleware);
     const drugRouter = express.Router();
     drugRouter.use(checkTokenMiddleware);
+    const userRouter = express.Router();
+    userRouter.use(checkTokenMiddleware);
 
     mongoose.connect('mongodb://localhost/medone');
-
 
     function checkTokenMiddleware(req, res, next) {
         var token = req.body.token || req.query.token || req.headers['x-access-token'];
@@ -133,10 +134,33 @@ let medoneRouter = () => {
             });
         });
 
+    userRouter
+        .get('/', (req, res) => {
+
+            /*
+            if (req.decodedToken.role !== 'ADMIN') {
+                return res.status(403).send({
+                    success: false,
+                    message: 'Permission denied'
+                });
+            }
+            */
+
+            User.find({}, (err, all) => {
+                if (err) {
+                    const errorMessage = 'getting users failed';
+                    res.statusCode = 500;
+                    res.json({error: errorMessage});
+                    return;
+                }
+                res.json(all);
+            });
+        });
 
     router.use('/authentication', authenticationRouter);
     router.use('/drug', drugRouter);
     router.use('/patient', patientRouter);
+    router.use('/user', userRouter);
 
     return router;
 };

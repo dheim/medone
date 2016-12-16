@@ -20,6 +20,15 @@ class PrescriptionForm extends Component {
         };
     }
 
+    componentDidMount() {
+        this.saveBtn = document.getElementById('form-submit');
+        this.saveBtn.addEventListener('click', this.handleSubmit.bind(this));
+    }
+
+    componentWillUnmount() {
+        this.saveBtn.removeEventListener('click', this.handleSubmit.bind(this));
+    }
+
     handleChange(field, value) {
         console.log(field);
         this.setState({[field]: value});
@@ -126,7 +135,7 @@ class PrescriptionForm extends Component {
                            unity={this.state.drug ? this.state.drug.unity : ''}
                            onChange={(field, value) => this.handleChange(field, value)}/>
 
-               <RaisedButton label="save" primary={true} type="submit" icon={<i className="fa fa-save"/>}/>
+
             </form>
             <Snackbar open={this.state.error} message={this.state.errorMessage} autoHideDuration={2500} onRequestClose={this.resetError.bind(this)} />
         </div>);
