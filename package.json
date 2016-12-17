@@ -1,6 +1,6 @@
 {
   "name": "medone",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "description": "a tool for prescribing drugs in a hospital",
   "repository": {
     "type": "git",
@@ -9,7 +9,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev": "webpack-dev-server --progress --content-base client/public --host 0.0.0.0",
-    "build": "webpack -p"
+    "build": "webpack --config webpack.prod.config.js -p"
   },
   "author": "Thilo Holzer, David Heim",
   "license": "ISC",
