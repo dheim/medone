@@ -7,6 +7,7 @@ const multer = require('multer')();
 var mongoose = require('mongoose');
 const jwt = require('jsonwebtoken');
 const config = require('./config');
+const bcrypt = require('bcrypt');
 
 let medoneRouter = () => {
     const router = express.Router();
@@ -47,12 +48,27 @@ let medoneRouter = () => {
         });
     }
 
+    function checkAccess(req, res, next) {
+        if (req.decodedToken.role !== this.role) {
+            return res.status(403).send({
+                success: false,
+                message: 'Permission denied'
+            });
+        } else {
+            next();
+        }
+    }
+
     authenticationRouter
         .post('/', (req, res) => {
             User.findOne({
                 username: req.body.username
             }, function (err, user) {
-                if (err || !user || user.password != req.body.password) {
+                if (
+                    err
+                    || !user
+                    || !bcrypt.compareSync(req.body.password, user.password)
+                ) {
                     return res.status(403).json({
                         success: false,
                         message: 'Authentiation failed'
@@ -111,14 +127,7 @@ let medoneRouter = () => {
 
         })
 
-        .post('/:patientId/prescriptions', (req, res, next) => {
-            if (req.decodedToken.role !== 'DOCTOR') {
-                return res.status(403).send({
-                    success: false,
-                    message: 'Permission denied'
-                });
-            }
-
+        .post('/:patientId/prescriptions', checkAccess.bind({role: 'DOCTOR'}), (req, res, next) => {
             let prescription = new Prescription(req.body);
             prescription.patientId = req.params.patientId;
             prescription.save(function (err, savedPrescription) {
@@ -135,17 +144,7 @@ let medoneRouter = () => {
         });
 
     userRouter
-        .get('/', (req, res) => {
-
-            /*
-            if (req.decodedToken.role !== 'ADMIN') {
-                return res.status(403).send({
-                    success: false,
-                    message: 'Permission denied'
-                });
-            }
-            */
-
+        .get('/', checkAccess.bind({role: 'ADMIN'}), (req, res) => {
             User.find({}, (err, all) => {
                 if (err) {
                     const errorMessage = 'getting users failed';
@@ -154,6 +153,16 @@ let medoneRouter = () => {
                     return;
                 }
                 res.json(all);
+            });
+        })
+        .post('/', checkAccess.bind({role: 'ADMIN'}), (req, res) => {
+            let user = new User(req.body);
+            user.save( (err, newUser) => {
+                if (err) {
+                    res.statusCode = 500;
+                    return
+                }
+                res.json(newUser.toObject());
             });
         });
 

@@ -30,7 +30,6 @@ class PrescriptionForm extends Component {
     }
 
     handleChange(field, value) {
-        console.log(field);
         this.setState({[field]: value});
     }
 

@@ -108,7 +108,7 @@ class PrescriptionList extends Component {
 
                     {(_token.role !== 'NURSE') ? (<div>
 
-                        <FloatingActionButton onClick={this.togglePrescriptionForm} style={{position: 'absolute', right: '41px', bottom: '67px'}}>
+                        <FloatingActionButton onClick={this.togglePrescriptionForm} style={{position: 'fixed', right: '41px', bottom: '67px'}}>
                             <i className="fa fa-plus"/>
                         </FloatingActionButton>
 

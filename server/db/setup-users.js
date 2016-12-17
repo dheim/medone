@@ -1,13 +1,22 @@
 const User = require('../models/User.js');
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 mongoose.connect('mongodb://localhost/medone');
+
+var admin = new User({
+    username: 'admin',
+    lastName: 'Min',
+    firstName: 'Ad',
+    password: bcrypt.hashSync('1234', 10),
+    role: 'ADMIN'
+});
 
 var doctor = new User({
     username: 'house',
     lastName: 'House',
     firstName: 'Gregory',
-    password: '1234',
+    password: bcrypt.hashSync('1234', 10),
     role: 'DOCTOR'
 });
 
@@ -15,12 +24,13 @@ var nurse = new User({
     username: 'nurse',
     lastName: 'Meyer',
     firstName: 'Andrea',
-    password: '1234',
+    password: bcrypt.hashSync('1234', 10),
     role: 'NURSE'
 });
 
-saveUsers([doctor, nurse]);
+saveUsers([admin, doctor, nurse]);
 
+User.remove().exec();
 
 function saveUsers(users) {
     let processed = 0;

@@ -9,6 +9,7 @@ import {Table, TableBody, TableHeader, TableHeaderColumn, TableRow, TableRowColu
 import FloatingActionButton from 'material-ui/FloatingActionButton';
 import Dialog from 'material-ui/Dialog';
 import RaisedButton from 'material-ui/RaisedButton';
+import Snackbar from 'material-ui/Snackbar';
 
 class UserList extends Component {
 
@@ -16,11 +17,16 @@ class UserList extends Component {
         super(props);
         this.state = {
             users: [],
-            showForm: false
+            showForm: false,
+            success: false
         };
     }
 
     componentDidMount() {
+        this.loadUsers();
+    }
+
+    loadUsers() {
         api.get('user')
             .then( users => {
                 this.setState({users});
@@ -31,6 +37,14 @@ class UserList extends Component {
         this.setState({
             showForm: !this.state.showForm
         });
+    }
+
+    showSuccess() {
+        this.setState({success: true});
+
+        window.setTimeout(() => {
+            this.setState({success: false});
+        }, 2500);
     }
 
 	render() {
@@ -48,6 +62,7 @@ class UserList extends Component {
                     <TableHeaderColumn>name</TableHeaderColumn>
                     <TableHeaderColumn>surname</TableHeaderColumn>
                     <TableHeaderColumn>role</TableHeaderColumn>
+                    <TableHeaderColumn>&nbsp;</TableHeaderColumn>
                 </TableRow>
             </TableHeader>
             <TableBody displayRowCheckbox={false}>
@@ -56,8 +71,8 @@ class UserList extends Component {
                         <TableRowColumn>{user._id}</TableRowColumn>
                         <TableRowColumn>{user.username}</TableRowColumn>
                         <TableRowColumn>{user.lastName}</TableRowColumn>
-                        <TableRowColumn>{user.firstName}</TableRowColumn> 
-                        <TableRowColumn>{user.role}</TableRowColumn> 
+                        <TableRowColumn>{user.firstName}</TableRowColumn>
+                        <TableRowColumn>{user.role}</TableRowColumn>
                     </TableRow>);
                 })};
             </TableBody>
@@ -68,12 +83,17 @@ class UserList extends Component {
                     onRequestClose={this.toggleForm.bind(this)}
                     actions={actions}
                     open={this.state.showForm}>
-                    <UserForm/>
+                    <UserForm onChange={this.loadUsers.bind(this)} actions={{
+                        close: this.toggleForm.bind(this),
+                        save: this.showSuccess.bind(this)
+                    }}/>
             </Dialog>
 
-            <FloatingActionButton onClick={this.toggleForm.bind(this)} style={{position: 'absolute', right: '41px', bottom: '67px'}}>
+            <FloatingActionButton onClick={this.toggleForm.bind(this)} style={{position: 'fixed', right: '41px', bottom: '67px'}}>
                 <i className="fa fa-plus"/>
             </FloatingActionButton>
+
+            <Snackbar open={this.state.success} message="User added!"/>
         </div>);
 	}
 }

@@ -50,11 +50,13 @@ class AppBarMenu extends Component {
                         {(_token) ? _token.username.substr(1) : null}
                     </span>
                 </span>);
+
+        const userLink = (<MenuItem primaryText="Users" containerElement={<Link to="/users"/>} rightIcon={<i style={icon} className="fa fa-users"/>} />);
     
         return (<div style={{color: 'white'}}>
             {(_token) ? loggedUser : null}
             <IconMenu iconButtonElement={<IconButton iconClassName="fa fa-bars"></IconButton>} targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
-                <MenuItem primaryText="Users" containerElement={<Link to="/users"/>} rightIcon={<i style={icon} className="fa fa-users"/>} />
+                {(_token.role === 'ADMIN') ? userLink : null}
                 <MenuItem onClick={this.logout.bind(this)} primaryText="Sign out" rightIcon={<i style={icon} className="fa fa-sign-out"/>}/>
             </IconMenu>
         </div>);
