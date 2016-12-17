@@ -33,7 +33,6 @@ class AppBarMenu extends Component {
     }
 
     render() {
-
         const _token = token.get();
         const style = {color: 'white', marginTop: '6px', fontWeight: 'bold'};
         const icon = {lineHeight: '24px'};
@@ -51,11 +50,12 @@ class AppBarMenu extends Component {
                     </span>
                 </span>);
 
-        const userLink = (<MenuItem primaryText="Users" containerElement={<Link to="/users"/>} rightIcon={<i style={icon} className="fa fa-users"/>} />);
+        const userLink = (<MenuItem primaryText="Users" containerElement={<Link to="/users"/>} rightIcon={<i style={icon} className="fa fa-address-card-o"/>} />);
     
         return (<div style={{color: 'white'}}>
             {(_token) ? loggedUser : null}
             <IconMenu iconButtonElement={<IconButton iconClassName="fa fa-bars"></IconButton>} targetOrigin={{horizontal: 'right', vertical: 'top'}} anchorOrigin={{horizontal: 'right', vertical: 'top'}}>
+                <MenuItem primaryText="Patients" containerElement={<Link to="/search"/>} rightIcon={<i style={icon} className="fa fa-users"/>} />
                 {(_token.role === 'ADMIN') ? userLink : null}
                 <MenuItem onClick={this.logout.bind(this)} primaryText="Sign out" rightIcon={<i style={icon} className="fa fa-sign-out"/>}/>
             </IconMenu>
