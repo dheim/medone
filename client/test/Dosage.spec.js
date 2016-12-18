@@ -1,7 +1,7 @@
 import React from 'react';
 import {shallow, mount, render} from 'enzyme';
 import MuiThemeProvider from 'material-ui/styles/MuiThemeProvider';
-import Dosage from '../src/components/Dosage';
+import Dosage from '../src/components/patient/Dosage';
 
 const dosageMarkup =
     <MuiThemeProvider>
