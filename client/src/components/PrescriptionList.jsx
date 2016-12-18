@@ -66,7 +66,7 @@ class PrescriptionList extends Component {
 
     createDateRange(from, to) {
         if (!to) {
-            return 'ab ' + moment(from).format('DD.MM.YYYY');
+            return 'from ' + moment(from).format('DD.MM.YYYY');
         } else {
             return moment(from).format('DD.MM.YYYY') + ' - ' + moment(to).format('DD.MM.YYYY');
         }
