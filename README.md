@@ -9,8 +9,7 @@
 4. node server/server.js
 5. Open web browser: http://localhost:3000
 
-# Developer mode
-(runs on port 8080 and proxies /api to 3000)
+# Developer mode (runs on port 8080 and proxies /api to 3000)
 1. npm run dev
 2. mongod --dbpath ./server/db/mongodb/
 3. node server/server.js
