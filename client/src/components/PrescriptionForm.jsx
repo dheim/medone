@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
-import {Link} from 'react-router';
 
 import {api} from 'services/api';
 import {token} from 'services/token';
+import moment from 'moment';
 
 import DrugAutoComplete from './DrugAutoComplete';
+import DateRange from './DateRange';
 import DosageSet from './DosageSet';
 import Snackbar from 'material-ui/Snackbar';
-import RaisedButton from 'material-ui/RaisedButton';
 
 class PrescriptionForm extends Component {
 
@@ -15,6 +15,7 @@ class PrescriptionForm extends Component {
         super(props);
         this.state = {
             patientId: this.props.patientId,
+            from: new Date(),
             error: false,
             errorMessage: ''
         };
@@ -46,7 +47,7 @@ class PrescriptionForm extends Component {
             return;
         } else if (!this.state.dosageScheme) {
             this.setState({error: true, errorMessage: 'Please set a dosage schema'});
-            return 
+            return
         } else if (this.state.dosageScheme === 'MorningNoonEveningNight') {
             let error = false;
             if (!this.state.disposalSetMorningNoonEveningNight) {
@@ -63,7 +64,7 @@ class PrescriptionForm extends Component {
             if (!this.state.disposalSetSpecificTimes) {
                 error = true;
             } else {
-                this.state.disposalSetSpecificTimes.forEach( function (item) {
+                this.state.disposalSetSpecificTimes.forEach(function (item) {
                     if (!item.time || !item.dosage) {
                         error = true;
                     }
@@ -84,6 +85,8 @@ class PrescriptionForm extends Component {
             drugDocId: this.state.drug.docid,
             drugName: this.state.drug.preparation_denomination,
             unity: this.state.drug.unity,
+            from: this.toUtcDate(this.state.from),
+            to: this.toUtcDate(this.state.to),
             dosageSet: {
                 dosageScheme: this.state.dosageScheme
             }
@@ -95,20 +98,31 @@ class PrescriptionForm extends Component {
             prescriptionData.dosageSet.disposalsSpecificTimes = this.state.disposalSetSpecificTimes;
         }
 
-        api.post(`patient/${this.state.patientId}/prescriptions/`, JSON.stringify(prescriptionData))
-            .then((result) => {
+        api.post(`patient/${this.state.patientId}/prescriptions`, JSON.stringify(prescriptionData))
+            .then(() => {
                 this.props.actions.close();
                 this.props.actions.save();
             });
 
         this.setState({
             drug: null,
+            from: new Date(),
+            to: null,
             dosageScheme: null,
             disposalSetMorningNoonEveningNight: null,
             disposalSetSpecificTimes: null
         });
 
         this.props.onChange();
+    }
+
+    toUtcDate(localDate) {
+        if (!localDate) {
+            return null;
+        }
+
+        var utcDate = moment(localDate).utc().subtract(localDate.getTimezoneOffset(), 'm').startOf('day');
+        return utcDate.format();
     }
 
     preventEnterFromSubmitting(event) {
@@ -128,6 +142,10 @@ class PrescriptionForm extends Component {
 
                 <DrugAutoComplete onChange={this.handleChange.bind(this)}/>
 
+                <DateRange from={this.state.from}
+                           to={this.state.to}
+                           onChange={(field, value) => this.handleChange(field, value)}/>
+
                 <DosageSet dosageScheme={this.state.dosageScheme}
                            disposalSetMorningNoonEveningNight={this.state.disposalSetMorningNoonEveningNight}
                            disposalSetSpecificTimes={this.state.disposalSetSpecificTimes}
@@ -136,7 +154,8 @@ class PrescriptionForm extends Component {
 
 
             </form>
-            <Snackbar open={this.state.error} message={this.state.errorMessage} autoHideDuration={2500} onRequestClose={this.resetError.bind(this)} />
+            <Snackbar open={this.state.error} message={this.state.errorMessage} autoHideDuration={2500}
+                      onRequestClose={this.resetError.bind(this)}/>
         </div>);
     }
 }

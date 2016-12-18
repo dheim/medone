@@ -51,7 +51,7 @@ class PrescriptionList extends Component {
         switch (dosageSet.dosageScheme) {
             case 'MorningNoonEveningNight':
                 let disposals = dosageSet.disposalsMorningNoonEveningNight;
-                return `${disposals.morning || 0}, ${disposals.noon || 0}, ${disposals.evening || 0}, ${disposals.night || 0}`
+                return `${disposals.morning || 0}, ${disposals.noon || 0}, ${disposals.evening || 0}, ${disposals.night || 0}`;
             case 'SpecificTimes':
                 return <ul className="prescriptions-specific-times">
                     {dosageSet.disposalsSpecificTimes.map((disposal, index) => {
@@ -61,6 +61,14 @@ class PrescriptionList extends Component {
                 </ul>;
             default:
                 return null;
+        }
+    }
+
+    createDateRange(from, to) {
+        if (!to) {
+            return 'ab ' + moment(from).format('DD.MM.YYYY');
+        } else {
+            return moment(from).format('DD.MM.YYYY') + ' - ' + moment(to).format('DD.MM.YYYY');
         }
     }
 
@@ -133,6 +141,7 @@ class PrescriptionList extends Component {
                                 <TableHeaderColumn>Dosage scheme</TableHeaderColumn>
                                 <TableHeaderColumn>Dosages</TableHeaderColumn>
                                 <TableHeaderColumn>Unity</TableHeaderColumn>
+                                <TableHeaderColumn>Date Range</TableHeaderColumn>
                             </TableRow>
                         </TableHeader>
                         <TableBody displayRowCheckbox={false}>
@@ -142,6 +151,7 @@ class PrescriptionList extends Component {
                                     <TableRowColumn>{prescription.dosageSet ? this.getDosageSchemeLabel(prescription.dosageSet.dosageScheme) : ''}</TableRowColumn>
                                     <TableRowColumn>{this.createDisposalOverview(prescription.dosageSet)}</TableRowColumn>
                                     <TableRowColumn>{prescription.unity}</TableRowColumn>
+§                                    <TableRowColumn>{this.createDateRange(prescription.from, prescription.to)}</TableRowColumn>
                                 </TableRow>
                             })};
                         </TableBody>

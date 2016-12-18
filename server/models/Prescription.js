@@ -5,6 +5,8 @@ var prescriptionSchema = new mongoose.Schema({
     drugDocId: Number,
     drugName: String,
     unity: String,
+    from: Date,
+    to: Date,
     dosageSet: {
         dosageScheme: String,
         disposalsMorningNoonEveningNight: {
