@@ -9,10 +9,11 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 injectTapEventPlugin();
 
 import LoginForm from 'components/LoginForm';
-import PatientForm from 'components/PatientForm';
-import PrescriptionList from 'components/PrescriptionList';
-import PatientSearchPage from './components/PatientSearchPage';
 import UserList from './components/user/UserList';
+
+import PatientForm from 'components/patient/PatientForm';
+import PrescriptionList from 'components/patient/PrescriptionList';
+import PatientSearchPage from './components/patient/PatientSearchPage';
 
 import AppBar from 'material-ui/AppBar';
 import {token} from 'services/token';

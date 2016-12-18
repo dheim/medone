@@ -5,7 +5,6 @@ import {token} from 'services/token';
 import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 
-
 class LoginForm extends Component {
 
     constructor() {
