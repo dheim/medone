@@ -15,7 +15,9 @@ class PatientSearchPage extends Component {
         this.state = {
             patients: null
         }
+    }
 
+    componentDidMount() {
         if (!token.isValid()) {
             hashHistory.push('/login');
         }

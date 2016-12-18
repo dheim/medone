@@ -23,8 +23,10 @@ class PatientForm extends Component {
 
 	async componentDidMount() {
 		const patient = await api.get(`patient/${this.props.routeParams.id}`);
-		patient.birthday = new Date(patient.birthday);
-		this.setState({patient});
+		if (patient && patient.id) {
+			patient.birthday = new Date(patient.birthday);
+			this.setState({patient});
+		}
 	}
 
 	save(event) {
