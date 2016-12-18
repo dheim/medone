@@ -40,6 +40,11 @@ module.exports = {
             less: join(src, 'less')
         }
     },
+    externals: {
+        'react/addons': true,
+        'react/lib/ExecutionEnvironment': true,
+        'react/lib/ReactContext': true
+    },
     plugins: [
         new ExtractTextPlugin('bundle.css'),
         new webpack.ProvidePlugin({
