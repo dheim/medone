@@ -1,28 +1,22 @@
 # Automatic setup (runs on port 3000)
-./setup.sh && node server/server.js
+1. ./setup.sh && node server/server.js
+2. Open web browser: http://localhost:3000
 
 # Manual setup
-npm run build // build package
+1. npm run build // build package
+2. mongod --dbpath ./server/db/mongodb/ // keep running
+3. node server/db/setup-users.js // import users
+4. node server/server.js
+5. Open web browser: http://localhost:3000
 
-mongod --dbpath ./server/db/mongodb/ // keep running
-
-node server/db/setup-users.js // import users
-
-node server/server.js
-
-
-# run dev-env (runs on port 8080 and proxies /api to 3000)
-npm run dev
-
-node server/server.js
-
-mongod --dbpath ./server/db/mongodb/
-
+# Developer mode
+(runs on port 8080 and proxies /api to 3000)
+1. npm run dev
+2. mongod --dbpath ./server/db/mongodb/
+3. node server/server.js
+4. Open web browser: http://localhost:8080
 
 # References
-
-Material-UI http://www.material-ui.com/
-
-Mongoose http://mongoosejs.com/
-
-ExpressJS http://expressjs.com/de/
+* Material-UI http://www.material-ui.com/
+* Mongoose http://mongoosejs.com/
+* ExpressJS http://expressjs.com/de/
